@@ -26,10 +26,12 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+app.MapGet("/", () => Results.Redirect("/account/register"));
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+	pattern: "{controller=Account}/{action=Register}/{id?}")
+	.WithStaticAssets();
 
 
 app.Run();
