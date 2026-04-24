@@ -3,57 +3,74 @@ using Project_Hail_Mary.Models;
 
 namespace Project_Hail_Mary.Controllers
 {
-	[Route("account")]
-	public class AccountController : Controller
-	{
-		// GET: /account/register
-		[HttpGet("register")]
-		public IActionResult Register()
-		{
-			return View();
-		}
+    [Route("account")]
+    public class AccountController : Controller
+    {
+        private readonly AppDbContext _db;
 
-		// POST: /account/register
-		[HttpPost("register")]
-		[ValidateAntiForgeryToken]
-		public IActionResult Register(Users model)
-		{
-			if (!ModelState.IsValid)
-				return View(model);
+        public AccountController(AppDbContext db)
+        {
+            _db = db;
+        }
 
-			// TODO: Save user to database here
+        // GET /account/register
+        [HttpGet("register")]
+        public IActionResult Register() => View();
 
-			return RedirectToAction("Login");
-		}
+        // POST /account/register
+        [HttpPost("register")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(Users model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
 
-		// GET: /account/login
-		[HttpGet("login")]
-		public IActionResult Login()
-		{
-			return View();
-		}
+            // TODO: hash password before saving
+            _db.Users.Add(model);
+            _db.SaveChanges();
 
-		// POST: /account/login
-		[HttpPost("login")]
-		[ValidateAntiForgeryToken]
-		public IActionResult Login(Users model)
-		{
-			if (!ModelState.IsValid)
-				return View(model);
+            return RedirectToAction("Login");
+        }
 
-			// TODO: Authenticate user here
+        // GET /account/login
+        [HttpGet("login")]
+        public IActionResult Login() => View();
 
-			return RedirectToAction("Index", "Home");
-		}
+        // POST /account/login
+        [HttpPost("login")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
 
-		// POST: /account/logout
-		[HttpPost("logout")]
-		[ValidateAntiForgeryToken]
-		public IActionResult Logout()
-		{
-			// TODO: Clear session/cookie here
+            // TODO: verify credentials against DB
+            return RedirectToAction("Index", "Home");
+        }
 
-			return RedirectToAction("login");
-		}
-	}
+        // GET /account/forgot-password
+        [HttpGet("forgot-password")]
+        public IActionResult ForgotPassword() => View();
+
+        // POST /account/forgot-password
+        [HttpPost("forgot-password")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // TODO: send reset email
+            return RedirectToAction("Login");
+        }
+
+        // POST /account/logout
+        [HttpPost("logout")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            // TODO: clear session/cookie
+            return RedirectToAction("Login");
+        }
+    }
 }

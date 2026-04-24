@@ -3,48 +3,173 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Project_Hail_Mary</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Project_Hail_Mary.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - bəzár</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            margin: 0;
+            background: #fff;
+        }
+
+        .site-header {
+            background: linear-gradient(160deg, #0d1b3e 0%, #1e3060 55%, #0a1428 100%);
+        }
+
+        .bazar-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            height: 78px;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 4px;
+        }
+
+            .nav-links a {
+                color: rgba(255,255,255,0.75);
+                font-size: 0.68rem;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                font-weight: 500;
+                padding: 6px 12px;
+                text-decoration: none;
+            }
+
+                .nav-links a:hover {
+                    color: #fff;
+                }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: 1.65rem;
+            letter-spacing: 0.05em;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .brand-sub {
+            display: block;
+            font-size: 0.52rem;
+            letter-spacing: 0.38em;
+            color: #aab4c8;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .bazar-input {
+            background-color: #eeeeee;
+            border: none;
+            border-radius: 30px;
+            padding: 0.78rem 1.3rem;
+            font-size: 0.87rem;
+            width: 100%;
+        }
+
+            .bazar-input:focus {
+                background-color: #e4e4e4;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(13,27,62,0.13);
+            }
+
+            .bazar-input::placeholder {
+                color: #999;
+            }
+
+        .bazar-btn {
+            background-color: #0d1b3e;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 0.72rem 3rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .bazar-btn:hover {
+                background-color: #1e3060;
+                color: #fff;
+            }
+
+        .account-section {
+            min-height: calc(100vh - 78px);
+            display: flex;
+        }
+
+        .left-panel {
+            flex: 0 0 42%;
+            padding: 2.5rem;
+            display: flex;
+        }
+
+        .right-panel {
+            flex: 1;
+            padding: 3rem 3rem 3rem 4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-title {
+            font-size: 2.7rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 1.8rem;
+        }
+
+        @@media (max-width: 767px) {
+            .left-panel {
+                display: none;
+            }
+
+            .right-panel {
+                padding: 2rem 1.5rem;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Project_Hail_Mary</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+
+    <header class="site-header">
+        <nav class="bazar-nav">
+            <ul class="nav-links">
+                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+            <div>
+                <a asp-controller="Account" asp-action="Login" class="brand-name">bəzár</a>
+                <span class="brand-sub">Bizarre</span>
             </div>
+            <ul class="nav-links">
+                <li><a href="#">Search</a></li>
+                <li><a asp-controller="Account" asp-action="Login">Account</a></li>
+                <li><a href="#">Cart (0)</a></li>
+            </ul>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Project_Hail_Mary - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderBody()
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

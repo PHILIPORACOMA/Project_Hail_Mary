@@ -1,0 +1,61 @@
+﻿@model Project_Hail_Mary.Models.Users
+@{ ViewData["Title"] = "Create Account"; Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<section class="account-section">
+
+    <div class="left-panel">
+        {{!-- Replace with your brand card image if you have one --}}
+        <div style="width:100%;border-radius:16px;background:linear-gradient(145deg,#1a3070,#0d1b3e,#0f224d);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;padding:3rem 2rem;gap:0.6rem;">
+            <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:5.5rem;color:#fff;border:2px solid rgba(255,255,255,0.2);border-radius:50%;width:110px;height:110px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;">B</div>
+            <div style="font-family:'Playfair Display',serif;color:#fff;font-size:2.6rem;letter-spacing:0.04em;">bəzár</div>
+            <div style="font-size:0.6rem;letter-spacing:0.38em;color:rgba(170,180,200,0.8);text-transform:uppercase;">Bizarre</div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="form-card">
+            <h1 class="form-title">Create Account</h1>
+
+            <form asp-controller="Account" asp-action="Register" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <input asp-for="FirstName" class="bazar-input" placeholder="First Name" autocomplete="given-name" />
+                    <span asp-validation-for="FirstName" class="field-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input asp-for="LastName" class="bazar-input" placeholder="Last Name" autocomplete="family-name" />
+                    <span asp-validation-for="LastName" class="field-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input asp-for="Email" class="bazar-input" placeholder="Email" autocomplete="email" />
+                    <span asp-validation-for="Email" class="field-error"></span>
+                </div>
+
+                <div class="mb-4">
+                    <input asp-for="Password" type="password" class="bazar-input" placeholder="Password" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="field-error"></span>
+                </div>
+
+                <div class="text-center mb-3">
+                    <button type="submit" class="bazar-btn">Register</button>
+                </div>
+
+                <div class="text-center">
+                    <p style="font-size:0.82rem;color:#777;margin:0;">
+                        Already have an account?
+                        <a asp-controller="Account" asp-action="Login"
+                           style="color:#111;font-weight:600;text-decoration:underline;">Sign in!</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

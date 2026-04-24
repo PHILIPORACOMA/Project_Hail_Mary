@@ -1,8 +1,196 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bəzár</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            /* Replace with: background-image: url('/images/hero.jpg'); background-size: cover; */
+            background: linear-gradient(135deg, #06101f 0%, #0d1b3e 40%, #122154 70%, #0a1428 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            height: 78px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 4px;
+        }
+
+            .nav-links a {
+                color: rgba(255,255,255,0.75);
+                font-size: 0.68rem;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                font-weight: 500;
+                padding: 6px 12px;
+                text-decoration: none;
+            }
+
+                .nav-links a:hover {
+                    color: #fff;
+                }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: 1.65rem;
+            letter-spacing: 0.05em;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .brand-sub {
+            display: block;
+            font-size: 0.52rem;
+            letter-spacing: 0.38em;
+            color: #aab4c8;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .hero-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 2rem 2.5rem 4rem;
+        }
+
+        .hero-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .hero-left {
+            flex: 0 0 55%;
+        }
+
+        .hero-headline {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.08;
+            text-transform: uppercase;
+            margin-bottom: 2.2rem;
+        }
+
+        .btn-hero {
+            display: inline-block;
+            border: 1.5px solid rgba(255,255,255,0.7);
+            color: #fff;
+            border-radius: 40px;
+            padding: 0.75rem 2.4rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .btn-hero:hover {
+                background: rgba(255,255,255,0.1);
+                color: #fff;
+            }
+
+        .hero-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Remove this div once you paste your product image */
+        .product-placeholder {
+            width: 280px;
+            height: 380px;
+            border-radius: 16px;
+            border: 1.5px dashed rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.25);
+            text-align: center;
+        }
+
+        @@media (max-width: 768px) {
+            .hero-left {
+                flex: 0 0 100%;
+            }
+
+            .hero-right {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="hero-nav">
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+        <div>
+            <a href="/home" class="brand-name">bəzár</a>
+            <span class="brand-sub">Bizarre</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Search</a></li>
+            <li><a href="/account/login">Account</a></li>
+            <li><a href="#">Cart (0)</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero-body">
+        <div class="hero-row">
+            <div class="hero-left">
+                <h1 class="hero-headline">
+                    Skip the ordinary.<br />
+                    Wear the<br />
+                    unexpected.
+                </h1>
+                <a href="#" class="btn-hero">Shop the Collection</a>
+            </div>
+            <div class="hero-right">
+                <!-- Replace this div with your product image once ready -->
+                <div class="product-placeholder">Product image here</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
