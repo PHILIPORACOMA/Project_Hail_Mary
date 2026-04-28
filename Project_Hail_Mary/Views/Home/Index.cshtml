@@ -23,7 +23,6 @@
 
         body {
             font-family: 'DM Sans', sans-serif;
-            /* Replace with: background-image: url('/images/hero.jpg'); background-size: cover; */
             background: linear-gradient(135deg, #06101f 0%, #0d1b3e 40%, #122154 70%, #0a1428 100%);
             color: #fff;
             min-height: 100vh;
@@ -43,6 +42,7 @@
             list-style: none;
             display: flex;
             gap: 4px;
+            align-items: center;
         }
 
             .nav-links a {
@@ -58,6 +58,23 @@
                 .nav-links a:hover {
                     color: #fff;
                 }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.75);
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+            .btn-logout:hover {
+                color: #fff;
+            }
 
         .brand-name {
             font-family: 'Playfair Display', serif;
@@ -130,7 +147,6 @@
             justify-content: center;
         }
 
-        /* Remove this div once you paste your product image */
         .product-placeholder {
             width: 280px;
             height: 380px;
@@ -171,6 +187,12 @@
             <li><a href="#">Search</a></li>
             <li><a href="/account/login">Account</a></li>
             <li><a href="#">Cart (0)</a></li>
+            <li>
+                <form action="/account/logout" method="post" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </li>
         </ul>
     </nav>
 
@@ -185,7 +207,6 @@
                 <a href="#" class="btn-hero">Shop the Collection</a>
             </div>
             <div class="hero-right">
-                <!-- Replace this div with your product image once ready -->
                 <div class="product-placeholder">Product image here</div>
             </div>
         </div>

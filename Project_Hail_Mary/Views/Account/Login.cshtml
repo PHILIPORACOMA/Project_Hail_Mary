@@ -8,9 +8,8 @@
 
     <!-- LEFT PANEL — paste your perfume image here as an <img> tag -->
     <div class="left-panel">
-        <div style="width:100%; border-radius:14px; background:linear-gradient(145deg,#0d1b3e,#1e3060,#0a1428); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.2); font-size:0.8rem; text-align:center;">
-            Image placeholder
-        </div>
+        <img src="~/images/perfumes.jpg" alt="perfumes"
+             style="width:100%; border-radius:14px; object-fit:cover; display:block;" />
     </div>
 
     <!-- RIGHT PANEL -->
@@ -21,6 +20,8 @@
 
             <form asp-controller="Account" asp-action="Login" method="post">
                 @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All" class="text-danger small mb-3"></div>
 
                 <div class="mb-3">
                     <input asp-for="Email" class="bazar-input" placeholder="Email" />

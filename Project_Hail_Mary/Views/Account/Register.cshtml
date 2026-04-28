@@ -8,11 +8,8 @@
 
     <!-- LEFT PANEL — brand card (replace inner content with your logo image if you have one) -->
     <div class="left-panel">
-        <div style="width:100%; border-radius:16px; background:linear-gradient(145deg,#1a3070,#0d1b3e,#0f224d); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:3rem 2rem; gap:0.5rem;">
-            <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:5rem; color:#fff; border:2px solid rgba(255,255,255,0.2); border-radius:50%; width:110px; height:110px; display:flex; align-items:center; justify-content:center; margin-bottom:1rem;">B</div>
-            <span style="font-family:'Playfair Display',serif; color:#fff; font-size:2.6rem; letter-spacing:0.04em;">bəzár</span>
-            <span style="font-size:0.6rem; letter-spacing:0.38em; color:rgba(170,180,200,0.8); text-transform:uppercase;">Bizarre</span>
-        </div>
+        <img src="~/images/bazarlogo.jpg" alt="bazarlogo"
+             style="width:100%; border-radius:14px; object-fit:cover; display:block;" />
     </div>
 
     <!-- RIGHT PANEL -->
@@ -42,6 +39,11 @@
                 <div class="mb-4">
                     <input asp-for="Password" class="bazar-input" placeholder="Password" />
                     <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <input asp-for="ConfirmPassword" class="bazar-input" placeholder="Confirm Password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                 </div>
 
                 <div class="text-center mb-3">

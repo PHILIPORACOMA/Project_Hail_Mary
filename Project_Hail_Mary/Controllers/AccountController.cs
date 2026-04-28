@@ -32,24 +32,35 @@ namespace Project_Hail_Mary.Controllers
             return RedirectToAction("Login");
         }
 
-        // GET /account/login
-        [HttpGet("login")]
-        public IActionResult Login() => View();
+		// GET /account/login
+		[HttpPost("login")]
+		[ValidateAntiForgeryToken]
+		public IActionResult Login(LoginViewModel model)
+		{
+			if (!ModelState.IsValid)
+				return View(model);
 
-        // POST /account/login
-        [HttpPost("login")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
+			// Check credentials against DB
+			var user = _db.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
 
-            // TODO: verify credentials against DB
-            return RedirectToAction("Index", "Home");
-        }
+			if (user == null)
+			{
+				ModelState.AddModelError("", "Invalid email or password");
+				return View(model);
+			}
 
-        // GET /account/forgot-password
-        [HttpGet("forgot-password")]
+			return RedirectToAction("Index", "Home");
+		}
+
+		// GET /account/login
+		[HttpGet("login")]
+		public IActionResult Login()
+		{
+			return View();
+		}
+
+		// GET /account/forgot-password
+		[HttpGet("forgot-password")]
         public IActionResult ForgotPassword() => View();
 
         // POST /account/forgot-password

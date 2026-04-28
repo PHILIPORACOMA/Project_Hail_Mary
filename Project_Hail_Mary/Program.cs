@@ -20,17 +20,17 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
-app.MapGet("/", () => Results.Redirect("/account/register"));
-
+app.MapGet("/", () => Results.Redirect("/account/login"));
 app.MapControllerRoute(
-    name: "default",
-	pattern: "{controller=Account}/{action=Register}/{id?}")
+	name: "default",
+	pattern: "{controller=Account}/{action=Login}/{id?}")
 	.WithStaticAssets();
 
 
