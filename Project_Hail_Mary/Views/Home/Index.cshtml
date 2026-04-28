@@ -23,11 +23,28 @@
 
         body {
             font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, #06101f 0%, #0d1b3e 40%, #122154 70%, #0a1428 100%);
             color: #fff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-image: url('/images/silk.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+            /* Dark overlay over silk background */
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(6,16,31,0.82) 0%, rgba(13,27,62,0.78) 40%, rgba(18,33,84,0.75) 70%, rgba(10,20,40,0.82) 100%);
+                z-index: 0;
+            }
+
+        nav, .hero-body {
+            position: relative;
+            z-index: 1;
         }
 
         .hero-nav {
@@ -111,7 +128,7 @@
         }
 
         .hero-left {
-            flex: 0 0 55%;
+            flex: 0 0 50%;
         }
 
         .hero-headline {
@@ -147,18 +164,37 @@
             justify-content: center;
         }
 
-        .product-placeholder {
-            width: 280px;
-            height: 380px;
-            border-radius: 16px;
-            border: 1.5px dashed rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.25);
-            text-align: center;
+        .product-stack {
+            position: relative;
+            width: 380px;
+            height: 440px;
         }
+
+            .product-stack img {
+                position: absolute;
+                object-fit: cover;
+            }
+
+            /* Back image — featured, top-right, behind */
+            .product-stack .img-back {
+                width: 300px;
+                height: 380px;
+                top: 0;
+                right: 0;
+                border-radius: 12px;
+                z-index: 1;
+            }
+
+            /* Front image — perfumes, bottom-left, in front */
+            .product-stack .img-front {
+                width: 200px;
+                height: 280px;
+                bottom: 0;
+                left: 0;
+                border-radius: 12px;
+                box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+                z-index: 2;
+            }
 
         @@media (max-width: 768px) {
             .hero-left {
@@ -207,7 +243,7 @@
                 <a href="#" class="btn-hero">Shop the Collection</a>
             </div>
             <div class="hero-right">
-                <div class="product-placeholder">Product image here</div>
+                <img class="img-back" src="~/images/featured.png" alt="Perfume featured" />
             </div>
         </div>
     </div>
