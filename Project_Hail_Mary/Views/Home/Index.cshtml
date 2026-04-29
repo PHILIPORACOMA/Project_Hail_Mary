@@ -1,252 +1,481 @@
 ﻿@{
     ViewData["Title"] = "Home";
-    Layout = null;
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bəzár</title>
+    <title>@ViewData["Title"] - bəzár</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --navy: #0d1b3e;
+            --navy-mid: #1a2f6e;
         }
 
-        html, body {
-            height: 100%;
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'DM Sans', sans-serif;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-image: url('/images/silk.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background: #fff;
+            margin: 0;
+            overflow-x: hidden;
         }
 
-            /* Dark overlay over silk background */
-            body::before {
-                content: '';
-                position: fixed;
-                inset: 0;
-                background: linear-gradient(135deg, rgba(6,16,31,0.82) 0%, rgba(13,27,62,0.78) 40%, rgba(18,33,84,0.75) 70%, rgba(10,20,40,0.82) 100%);
-                z-index: 0;
-            }
-
-        nav, .hero-body {
-            position: relative;
-            z-index: 1;
+        /* NAV */
+        .navbar-bazar {
+            background-color: var(--navy);
+            padding: 0 2rem;
+            height: 62px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .hero-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2.5rem;
-            height: 78px;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-
-            .nav-links a {
-                color: rgba(255,255,255,0.75);
-                font-size: 0.68rem;
+            .navbar-bazar .nav-link {
+                color: #c8d3e8 !important;
+                font-size: 0.7rem;
                 letter-spacing: 0.14em;
                 text-transform: uppercase;
                 font-weight: 500;
-                padding: 6px 12px;
-                text-decoration: none;
+                padding: 0.35rem 0.6rem !important;
+                transition: color 0.2s;
             }
 
-                .nav-links a:hover {
-                    color: #fff;
+                .navbar-bazar .nav-link:hover {
+                    color: #fff !important;
                 }
 
-        .btn-logout {
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.75);
-            font-size: 0.68rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            font-weight: 500;
-            padding: 6px 12px;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-        }
-
-            .btn-logout:hover {
-                color: #fff;
-            }
-
-        .brand-name {
+        .brand-title {
             font-family: 'Playfair Display', serif;
             color: #fff;
-            font-size: 1.65rem;
-            letter-spacing: 0.05em;
-            display: block;
+            font-size: 1.55rem;
+            letter-spacing: 0.04em;
+            line-height: 1;
             text-align: center;
-            text-decoration: none;
         }
 
-        .brand-sub {
-            display: block;
+        .brand-subtitle {
             font-size: 0.52rem;
-            letter-spacing: 0.38em;
-            color: #aab4c8;
+            letter-spacing: 0.3em;
+            color: #8a9ab8;
             text-transform: uppercase;
             text-align: center;
+            display: block;
+            margin-top: 2px;
         }
 
-        .hero-body {
-            flex: 1;
+        /* HERO */
+        .hero-section {
+            position: relative;
+            min-height: 520px;
             display: flex;
             align-items: center;
-            padding: 2rem 2.5rem 4rem;
+            overflow: hidden;
+            background: linear-gradient(120deg, #0b1838 0%, #162255 40%, #1c3070 100%);
         }
 
-        .hero-row {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-        }
-
-        .hero-left {
-            flex: 0 0 50%;
-        }
-
-        .hero-headline {
-            font-size: clamp(2.4rem, 5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.08;
-            text-transform: uppercase;
-            margin-bottom: 2.2rem;
-        }
-
-        .btn-hero {
-            display: inline-block;
-            border: 1.5px solid rgba(255,255,255,0.7);
-            color: #fff;
-            border-radius: 40px;
-            padding: 0.75rem 2.4rem;
-            font-size: 0.72rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-            .btn-hero:hover {
-                background: rgba(255,255,255,0.1);
-                color: #fff;
+            .hero-section::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(30,60,140,0.55) 0%, transparent 70%), radial-gradient(ellipse 60% 80% at 20% 30%, rgba(10,20,70,0.7) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 85% 10%, rgba(40,80,180,0.4) 0%, transparent 60%);
+                pointer-events: none;
             }
 
-        .hero-right {
-            flex: 1;
+        .hero-silk {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(118deg, transparent 0px, rgba(255,255,255,0.025) 1px, transparent 2px, transparent 60px), repeating-linear-gradient(62deg, transparent 0px, rgba(255,255,255,0.015) 1px, transparent 2px, transparent 80px);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 4rem 0;
+        }
+
+            .hero-content h1 {
+                font-family: 'DM Sans', sans-serif;
+                font-size: 2.9rem;
+                font-weight: 700;
+                color: #fff;
+                line-height: 1.18;
+                margin-bottom: 2.2rem;
+                text-transform: uppercase;
+                letter-spacing: 0.02em;
+            }
+
+        .btn-shop-outline {
+            background-color: transparent;
+            color: #fff;
+            border: 1.5px solid rgba(255,255,255,0.7);
+            border-radius: 50px;
+            padding: 0.75rem 1.8rem;
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+            .btn-shop-outline:hover {
+                background-color: rgba(255,255,255,0.12);
+                color: #fff;
+                border-color: #fff;
+            }
+
+        .hero-products {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 2rem 0;
+        }
+
+        .bottle-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-end;
+        }
+
+        .bottle-svg-hero {
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+        }
+
+        /* ABOUT */
+        .about-section {
+            padding: 5rem 0;
+            background: #fff;
+        }
+
+        .about-img-placeholder {
+            width: 100%;
+            aspect-ratio: 1/1;
+            max-width: 420px;
+            background: linear-gradient(135deg, #1a2f6e 0%, #0d1b3e 100%);
+            border-radius: 4px;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            grid-template-rows: repeat(3,1fr);
+            gap: 8px;
+            padding: 20px;
+        }
+
+        .mini-bottle {
+            background: rgba(255,255,255,0.08);
+            border-radius: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .product-stack {
-            position: relative;
-            width: 380px;
-            height: 440px;
+        .about-text-wrap {
+            padding-left: 3rem;
         }
 
-            .product-stack img {
-                position: absolute;
-                object-fit: cover;
+            .about-text-wrap h2 {
+                font-family: 'DM Sans', sans-serif;
+                font-size: 2.2rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                color: #111;
+                margin-bottom: 1rem;
             }
 
-            /* Back image — featured, top-right, behind */
-            .product-stack .img-back {
-                width: 300px;
-                height: 380px;
-                top: 0;
-                right: 0;
-                border-radius: 12px;
-                z-index: 1;
+        .about-tagline {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .about-body {
+            font-size: 0.85rem;
+            color: #555;
+            line-height: 1.75;
+            margin-bottom: 0.9rem;
+        }
+
+        /* COLLECTION */
+        .collection-section {
+            padding: 3.5rem 0 5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+            .section-header h2 {
+                font-family: 'DM Sans', sans-serif;
+                font-size: 1.65rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: #111;
+                margin: 0;
             }
 
-            /* Front image — perfumes, bottom-left, in front */
-            .product-stack .img-front {
-                width: 200px;
-                height: 280px;
-                bottom: 0;
-                left: 0;
-                border-radius: 12px;
-                box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-                z-index: 2;
+        .btn-see-all {
+            background: transparent;
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            padding: 0.45rem 1.3rem;
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+
+            .btn-see-all:hover {
+                border-color: var(--navy);
+                color: var(--navy);
             }
+
+        .product-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 2rem 1.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+            }
+
+        .product-img-wrap {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .product-name {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #222;
+            letter-spacing: 0.06em;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .btn-buy {
+            background-color: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.6rem 1.8rem;
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+            .btn-buy:hover {
+                background-color: var(--navy-mid);
+                color: #fff;
+            }
+
+        /* FOOTER */
+        .site-footer {
+            background: linear-gradient(135deg, #162255 0%, #0d1b3e 100%);
+            padding: 3.5rem 2rem;
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: 2.8rem;
+            letter-spacing: 0.04em;
+            line-height: 1;
+        }
+
+        .footer-sub {
+            font-size: 0.6rem;
+            letter-spacing: 0.4em;
+            color: #8a9ab8;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
 
         @@media (max-width: 768px) {
-            .hero-left {
-                flex: 0 0 100%;
+            .hero-content h1 {
+                font-size: 2rem;
             }
 
-            .hero-right {
-                display: none;
+            .about-text-wrap {
+                padding-left: 0;
+                margin-top: 2rem;
+            }
+
+            .hero-section {
+                min-height: auto;
             }
         }
     </style>
 </head>
 <body>
 
-    <nav class="hero-nav">
-        <ul class="nav-links">
-            <li><a href="/home">Home</a></li>
-            <li><a href="#">Shop</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
-        <div>
-            <a href="/home" class="brand-name">bəzár</a>
-            <span class="brand-sub">Bizarre</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#">Search</a></li>
-            <li><a href="/account/login">Account</a></li>
-            <li><a href="#">Cart (0)</a></li>
-            <li>
-                <form action="/account/logout" method="post" style="display:inline;">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn-logout">Logout</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
 
-    <div class="hero-body">
-        <div class="hero-row">
-            <div class="hero-left">
-                <h1 class="hero-headline">
-                    Skip the ordinary.<br />
-                    Wear the<br />
-                    unexpected.
-                </h1>
-                <a href="#" class="btn-hero">Shop the Collection</a>
-            </div>
-            <div class="hero-right">
-                <img class="img-back" src="~/images/featured.png" alt="Perfume featured" />
+    <!-- HERO -->
+    <section class="hero-section">
+        <div class="hero-silk"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1>Skip the<br />ordinary.<br />Wear the<br />unexpected.</h1>
+                        <a asp-controller="Shop" asp-action="Index" class="btn-shop-outline">Shop the collection</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-products">
+                        <div class="bottle-group">
+                            <svg class="bottle-svg-hero" width="90" height="160" viewBox="0 0 90 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="33" y="0" width="24" height="14" rx="3" fill="#0d1b3e" opacity="0.9" />
+                                <rect x="37" y="13" width="16" height="22" rx="2" fill="#1a2f6e" opacity="0.8" />
+                                <rect x="14" y="33" width="62" height="110" rx="8" fill="#1e3580" />
+                                <rect x="14" y="33" width="62" height="110" rx="8" fill="url(#sh1)" />
+                                <rect x="22" y="70" width="46" height="40" rx="4" fill="rgba(255,255,255,0.12)" />
+                                <text x="45" y="94" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Georgia,serif" letter-spacing="1">muller</text>
+                                <defs>
+                                    <linearGradient id="sh1" x1="14" y1="33" x2="76" y2="143" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="white" stop-opacity="0.15" />
+                                        <stop offset="40%" stop-color="white" stop-opacity="0.04" />
+                                        <stop offset="100%" stop-color="black" stop-opacity="0.2" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <svg class="bottle-svg-hero" width="100" height="185" viewBox="0 0 100 185" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="36" y="0" width="28" height="16" rx="4" fill="#0a1228" />
+                                <rect x="40" y="15" width="20" height="26" rx="2" fill="#162250" />
+                                <rect x="12" y="39" width="76" height="130" rx="10" fill="#1e3580" />
+                                <rect x="12" y="39" width="76" height="130" rx="10" fill="url(#sh2)" />
+                                <rect x="22" y="82" width="56" height="48" rx="5" fill="rgba(255,255,255,0.12)" />
+                                <text x="50" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="Georgia,serif" letter-spacing="1">antheia</text>
+                                <defs>
+                                    <linearGradient id="sh2" x1="12" y1="39" x2="88" y2="169" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="white" stop-opacity="0.18" />
+                                        <stop offset="35%" stop-color="white" stop-opacity="0.04" />
+                                        <stop offset="100%" stop-color="black" stop-opacity="0.25" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- THE MAGIC OF BIZARRE -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-md-5">
+                    <!-- Replace this div with <img src="~/images/about-collection.jpg" ... /> when ready -->
+                    <div class="about-img-placeholder">
+                        @for (int i = 0; i < 9; i++)
+                        {
+                            <div class="mini-bottle">
+                                <svg width="28" height="48" viewBox="0 0 28 48" fill="none">
+                                    <rect x="9" y="0" width="10" height="6" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                                    <rect x="11" y="5" width="6" height="8" rx="1" fill="rgba(255,255,255,0.18)" />
+                                    <rect x="4" y="12" width="20" height="34" rx="3" fill="rgba(255,255,255,0.12)" />
+                                </svg>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="about-text-wrap">
+                        <h2>The Magic of<br />Bizarre</h2>
+                        <p class="about-tagline">"Luxury should be intimate. It should be felt."</p>
+                        <p class="about-body">Bəzár Bizarre is built on a different idea: that fragrance isn't about status, but experience. It's about the quiet confidence of a scent that is entirely, undeniably yours.</p>
+                        <p class="about-body">In a world where luxury is often exaggerated and overpriced, Bəzár Bizarre strips it back to what truly matters: careful formulation, balanced composition, and fragrances that embed naturally on the skin.</p>
+                        <p class="about-body">Each scent is crafted to be expressive, memorable, and accessible — because true luxury isn't about the price tag. It's about how it makes you feel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR COLLECTION -->
+    <section class="collection-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Collection</h2>
+                <a asp-controller="Shop" asp-action="Index" class="btn-see-all">See All</a>
+            </div>
+            <div class="row g-3">
+                @{
+                    var featured = new[] {
+                                new { Name = "Enchantè", Slug = "enchante" },
+                                new { Name = "Muller",   Slug = "muller"   },
+                                new { Name = "Elevati",  Slug = "elevati"  },
+                                new { Name = "Buzz",     Slug = "buzz"     },
+                                };
+                }
+                @foreach (var p in featured)
+                {
+                    <div class="col-6 col-md-3">
+                        <div class="product-card">
+                            <div class="product-img-wrap">
+                                @* Replace with: <img src="~/images/products/@(p.Slug).png" alt="@p.Name" style="height:130px;object-fit:contain;" /> *@
+                                <svg width="80" height="134" viewBox="0 0 80 134" fill="none">
+                                    <rect x="28" y="0" width="24" height="12" rx="3" fill="#0d1b3e" />
+                                    <rect x="31" y="11" width="18" height="18" rx="2" fill="#162255" />
+                                    <rect x="8" y="27" width="64" height="100" rx="9" fill="#1e3580" />
+                                    <rect x="8" y="27" width="64" height="100" rx="9" fill="url(#fc_@(p.Slug))" />
+                                    <rect x="16" y="62" width="48" height="36" rx="4" fill="rgba(255,255,255,0.1)" />
+                                    <text x="40" y="84" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="6" font-family="Georgia,serif" letter-spacing="0.5">@p.Name.ToLower()</text>
+                                    <defs>
+                                        <linearGradient id="fc_@(p.Slug)" x1="8" y1="27" x2="72" y2="127" gradientUnits="userSpaceOnUse">
+                                            <stop offset="0%" stop-color="white" stop-opacity="0.16" />
+                                            <stop offset="100%" stop-color="black" stop-opacity="0.18" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <p class="product-name">@p.Name</p>
+                            <a href="#" class="btn-buy">Buy Now</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-brand">bəzár</div>
+        <div class="footer-sub">Bizarre</div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
