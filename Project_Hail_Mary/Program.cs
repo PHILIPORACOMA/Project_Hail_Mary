@@ -9,6 +9,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Session support
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +31,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
@@ -29,9 +39,9 @@ app.MapStaticAssets();
 
 app.MapGet("/", () => Results.Redirect("/account/login"));
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Account}/{action=Login}/{id?}")
-	.WithStaticAssets();
+    name: "default",
+    pattern: "{controller=Account}/{action=Login}/{id?}")
+    .WithStaticAssets();
 
 
 app.Run();
