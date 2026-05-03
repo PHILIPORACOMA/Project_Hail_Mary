@@ -133,20 +133,25 @@
             padding: 0 0 5rem;
         }
 
+        /* ── UPDATED: product card is now an anchor ── */
         .product-card-shop {
-            background: #f8f8f8;
-            border-radius: 6px;
-            padding: 2rem 1rem 1.4rem;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: #f8f8f8;
+            border-radius: 6px;
+            padding: 2rem 1rem 1.4rem;
             cursor: pointer;
+            text-decoration: none;
+            color: inherit;
             transition: transform 0.22s, box-shadow 0.22s;
         }
 
             .product-card-shop:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+                color: inherit;
+                text-decoration: none;
             }
 
         .product-img-wrap {
@@ -165,24 +170,12 @@
             margin: 0;
             letter-spacing: 0.04em;
         }
-
-        /* Placeholder bottle colors for variety */
-        .bottle-a {
-            fill: #1e3580;
-        }
-
-        .bottle-b {
-            fill: #162255;
-        }
-
-        .bottle-c {
-            fill: #243e8a;
-        }
     </style>
 </head>
 <body>
 
   
+
     <!-- SHOP BANNER -->
     <div class="shop-banner"></div>
 
@@ -202,20 +195,20 @@
             <div class="row g-3" id="productGrid">
                 @{
                     var products = new[] {
-                                new { Name = "Afro",    Slug = "afro",    Category = "men"   },
-                                new { Name = "Crest",   Slug = "crest",   Category = "women" },
-                                new { Name = "Florine", Slug = "florine", Category = "women" },
-                                new { Name = "Quiff",   Slug = "quiff",   Category = "men"   },
-                                new { Name = "Enchantè",Slug = "enchante",Category = "women" },
-                                new { Name = "Baco",    Slug = "baco",    Category = "men"   },
-                                new { Name = "Antheia", Slug = "antheia", Category = "women" },
-                                new { Name = "Hypnos",  Slug = "hypnos",  Category = "men"   },
-                                new { Name = "Temple",  Slug = "temple",  Category = "men"   },
-                                new { Name = "Athena",  Slug = "athena",  Category = "women" },
-                                new { Name = "Muller",  Slug = "muller",  Category = "men"   },
-                                new { Name = "Slick",   Slug = "slick",   Category = "men"   },
-                                new { Name = "Aphroe",  Slug = "aphroe",  Category = "women" },
-                                new { Name = "Toper",   Slug = "toper",   Category = "men"   },
+                                new { Name = "Afro",     Slug = "afro",     Category = "men"   },
+                                new { Name = "Crest",    Slug = "crest",    Category = "women" },
+                                new { Name = "Florine",  Slug = "florine",  Category = "women" },
+                                new { Name = "Quiff",    Slug = "quiff",    Category = "men"   },
+                                new { Name = "Enchantè", Slug = "enchante", Category = "women" },
+                                new { Name = "Baco",     Slug = "baco",     Category = "men"   },
+                                new { Name = "Antheia",  Slug = "antheia",  Category = "women" },
+                                new { Name = "Hypnos",   Slug = "hypnos",   Category = "men"   },
+                                new { Name = "Temple",   Slug = "temple",   Category = "men"   },
+                                new { Name = "Athena",   Slug = "athena",   Category = "women" },
+                                new { Name = "Muller",   Slug = "muller",   Category = "men"   },
+                                new { Name = "Slick",    Slug = "slick",    Category = "men"   },
+                                new { Name = "Aphroe",   Slug = "aphroe",   Category = "women" },
+                                new { Name = "Toper",    Slug = "toper",    Category = "men"   },
                                 };
                     int idx = 0;
                     string[] shades = { "#1e3580", "#162255", "#243e8a", "#1a2f6e", "#0f2260", "#1b3878" };
@@ -225,7 +218,9 @@
                     string color = shades[idx % shades.Length];
                     idx++;
                     <div class="col-6 col-sm-4 col-md-3 product-item" data-category="@p.Category">
-                        <div class="product-card-shop">
+                        <!-- Changed from div to anchor tag pointing to ProductDetail -->
+                        <a class="product-card-shop"
+                           href="/Shop/ProductDetail?slug=@p.Slug&name=@Uri.EscapeDataString(p.Name)&category=@p.Category">
                             <div class="product-img-wrap">
                                 @*
                                     Replace the SVG below with a real image once available:
@@ -247,7 +242,7 @@
                                 </svg>
                             </div>
                             <p class="product-name-shop">@p.Name</p>
-                        </div>
+                        </a>
                     </div>
                 }
             </div>

@@ -1,0 +1,558 @@
+﻿@{
+    ViewData["Title"] = ViewBag.ProductName ?? "Product";
+
+    // Simulate product data — replace with real DB lookup via Model
+    var productName = ViewBag.ProductName as string ?? "Aphrora";
+    var productSlug = ViewBag.ProductSlug as string ?? "aphroe";
+    var productCategory = ViewBag.ProductCategory as string ?? "women";
+    var productPrice = ViewBag.ProductPrice as string ?? "₱389.00";
+    var productRating = ViewBag.ProductRating as int? ?? 4;
+    var productReviews = ViewBag.ProductReviews as int? ?? 243;
+    var productDescription = ViewBag.ProductDescription as string
+        ?? $"{productName} is a soft, romantic fragrance inspired by Bath &amp; Body Works Sweet Pea, designed for the woman who loves gentle, fresh, and effortlessly feminine scents.";
+    var productDescription2 = ViewBag.ProductDescription2 as string
+        ?? "This fragrance captures a light floral sweetness with a fresh, airy feel. It opens with a bright floral freshness, unfolds into a soft bouquet of delicate petals, and settles into a clean, subtle warmth that feels comforting and easy to wear.";
+
+    string[] shades = { "#1e3580", "#162255", "#243e8a", "#1a2f6e", "#0f2260", "#1b3878" };
+    // Pick a color deterministically based on slug
+    int colorIdx = Math.Abs((productSlug ?? "").GetHashCode()) % shades.Length;
+    string bottleColor = shades[colorIdx];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@productName - bəzár</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --navy: #0d1b3e;
+            --navy-mid: #1a2f6e;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #fff;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV (same as Shop) ── */
+        .navbar-bazar {
+            background-color: var(--navy);
+            padding: 0 2rem;
+            height: 62px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+            .navbar-bazar .nav-link {
+                color: #c8d3e8 !important;
+                font-size: 0.7rem;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                font-weight: 500;
+                padding: 0.35rem 0.6rem !important;
+                transition: color 0.2s;
+            }
+
+                .navbar-bazar .nav-link:hover {
+                    color: #fff !important;
+                }
+
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: 1.55rem;
+            letter-spacing: 0.04em;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .brand-subtitle {
+            font-size: 0.52rem;
+            letter-spacing: 0.3em;
+            color: #8a9ab8;
+            text-transform: uppercase;
+            text-align: center;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ── PRODUCT DETAIL LAYOUT ── */
+        .detail-section {
+            padding: 3rem 0 5rem;
+        }
+
+        /* LEFT – product image card */
+        .product-image-card {
+            background: linear-gradient(135deg, #0b1838 0%, #162255 40%, #1c3a7a 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+            .product-image-card::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse 80% 60% at 30% 20%, rgba(30,60,140,0.55) 0%, transparent 65%), repeating-linear-gradient(118deg, transparent 0px, rgba(255,255,255,0.018) 1px, transparent 2px, transparent 60px), repeating-linear-gradient(62deg, transparent 0px, rgba(255,255,255,0.012) 1px, transparent 2px, transparent 80px);
+                pointer-events: none;
+            }
+
+        /* brand overlay text on card */
+        .card-brand-overlay {
+            position: absolute;
+            top: 1.4rem;
+            left: 1.6rem;
+            color: rgba(255,255,255,0.55);
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
+            z-index: 2;
+        }
+
+        .card-inspired-text {
+            position: absolute;
+            top: 3.5rem;
+            left: 1.6rem;
+            right: 1.6rem;
+            color: rgba(255,255,255,0.75);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.35rem;
+            line-height: 1.3;
+            z-index: 2;
+        }
+
+        .card-tag {
+            position: absolute;
+            bottom: 5rem;
+            left: 1.6rem;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+            .card-tag span {
+                display: block;
+                color: rgba(255,255,255,0.9);
+                font-family: 'Playfair Display', serif;
+                font-weight: 700;
+            }
+
+            .card-tag .tag-num {
+                font-size: 1.6rem;
+                line-height: 1;
+            }
+
+            .card-tag .tag-label {
+                font-size: 0.55rem;
+                letter-spacing: 0.25em;
+                text-transform: uppercase;
+                color: rgba(255,255,255,0.55);
+            }
+
+        .card-socials {
+            position: absolute;
+            bottom: 1.2rem;
+            left: 1.6rem;
+            z-index: 2;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.08em;
+            line-height: 1.8;
+        }
+
+        /* bottle SVG inside card */
+        .bottle-wrap {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        /* RIGHT – product info */
+        .product-info {
+            padding-left: 2.5rem;
+        }
+
+        @@media (max-width: 767px) {
+            .product-info {
+                padding-left: 0;
+                margin-top: 2rem;
+            }
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #111;
+            margin: 0 0 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 0.4rem;
+        }
+
+        .stars-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .stars {
+            color: #b5a04a;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .review-count {
+            font-size: 0.78rem;
+            color: #888;
+        }
+
+        .product-desc {
+            font-size: 0.83rem;
+            color: #444;
+            line-height: 1.72;
+            margin-bottom: 1.1rem;
+        }
+
+        /* size selector */
+        .choose-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.6rem;
+        }
+
+        .size-btn {
+            border: 1px solid #bbb;
+            background: #fff;
+            border-radius: 50px;
+            padding: 0.38rem 1.4rem;
+            font-size: 0.8rem;
+            color: #333;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.18s;
+        }
+
+            .size-btn.active, .size-btn:hover {
+                border-color: var(--navy);
+                background: var(--navy);
+                color: #fff;
+            }
+
+        /* quantity */
+        .qty-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+        }
+
+        .qty-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            padding: 0.3rem 1rem;
+            width: fit-content;
+            margin-bottom: 1.8rem;
+        }
+
+        .qty-btn {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            color: #333;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            width: 20px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .qty-val {
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* add to cart */
+        .btn-add-cart {
+            display: block;
+            width: 100%;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+            .btn-add-cart:hover {
+                background: var(--navy-mid);
+                transform: translateY(-1px);
+            }
+
+            .btn-add-cart:active {
+                transform: translateY(0);
+            }
+
+        /* back link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #888;
+            text-decoration: none;
+            margin-bottom: 2.5rem;
+            transition: color 0.18s;
+        }
+
+            .back-link:hover {
+                color: var(--navy);
+            }
+
+        .back-arrow {
+            font-size: 0.9rem;
+        }
+
+        /* toast */
+        .toast-wrap {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: none;
+        }
+
+        .toast-box {
+            background: var(--navy);
+            color: #fff;
+            padding: 0.85rem 1.6rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            animation: slideUp 0.3s ease;
+        }
+
+        @@keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+  
+
+    <!-- DETAIL SECTION -->
+    <section class="detail-section">
+        <div class="container">
+            <a href="/Shop/Shop" class="back-link">
+                <span class="back-arrow">←</span> Back to shop
+            </a>
+
+            <div class="row align-items-start">
+
+                <!-- LEFT: Image card -->
+                <div class="col-12 col-md-5">
+                    <div class="product-image-card">
+                        <span class="card-brand-overlay">bazar</span>
+                        <div class="card-inspired-text">
+                            Bath &amp; Body Works<br>
+                            <em>Sweet Pea</em>
+                        </div>
+                        <div class="card-tag">
+                            <span class="tag-num">24H</span>
+                            <span class="tag-label">Last Longer</span>
+                            <span class="tag-num" style="margin-top:0.5rem;">65 ML</span>
+                        </div>
+                        <div class="card-socials">
+                            &#9679; bazarscents.com<br>
+                            &#9679; bazar scents<br>
+                            &#9679; bazar
+                        </div>
+
+                        <!-- Bottle SVG (replace with <img> once you have real product images) -->
+                        <div class="bottle-wrap">
+                            <svg width="130" height="200" viewBox="0 0 70 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="24" y="0" width="22" height="10" rx="2.5" fill="@bottleColor" opacity="0.8" />
+                                <rect x="27" y="9" width="16" height="16" rx="2" fill="@bottleColor" opacity="0.9" />
+                                <rect x="6" y="23" width="58" height="94" rx="9" fill="@bottleColor" />
+                                <rect x="6" y="23" width="58" height="94" rx="9" fill="url(#det_grad)" />
+                                <rect x="13" y="56" width="44" height="36" rx="3.5" fill="rgba(255,255,255,0.1)" />
+                                <text x="35" y="78" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="6" font-family="Georgia,serif" letter-spacing="0.5">@productName.ToLower()</text>
+                                <defs>
+                                    <linearGradient id="det_grad" x1="6" y1="23" x2="64" y2="117" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="white" stop-opacity="0.22" />
+                                        <stop offset="100%" stop-color="black" stop-opacity="0.22" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Product info -->
+                <div class="col-12 col-md-7">
+                    <div class="product-info">
+                        <h1 class="product-title">@productName</h1>
+
+                        <div class="d-flex align-items-center justify-content-between mb-1">
+                            <div class="product-price">@productPrice</div>
+                            <div class="stars-row mb-0">
+                                <span class="stars">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= productRating)
+                                        {
+                                            <text>★</text>
+                                        }
+                                        else
+                                        {
+
+                                            <text>☆</text>
+                                        }
+                                    }
+                                </span>
+                                <span class="review-count">(@productReviews)</span>
+                            </div>
+                        </div>
+
+                        <p class="product-desc">@Html.Raw(productDescription)</p>
+                        <p class="product-desc">@Html.Raw(productDescription2)</p>
+
+                        <!-- Size -->
+                        <div class="choose-label">choose size</div>
+                        <div class="size-options">
+                            <button class="size-btn active" onclick="selectSize(this)">65ml</button>
+                            <button class="size-btn" onclick="selectSize(this)">100ml</button>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="qty-label">quantity</div>
+                        <div class="qty-row">
+                            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                            <span class="qty-val" id="qtyVal">1</span>
+                            <button class="qty-btn" onclick="changeQty(1)">+</button>
+                        </div>
+
+                        <!-- Add to cart -->
+                        @if (Context.Session.GetInt32("UserId") != null)
+                        {
+                            <button class="btn-add-cart" onclick="addToCart()">Add to Cart</button>
+                        }
+                        else
+                        {
+                            <a href="/Account/Login" class="btn-add-cart" style="text-align:center; text-decoration:none;">
+                                Login to Add to Cart
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast-wrap" id="toast">
+        <div class="toast-box">Added to cart ✓</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let qty = 1;
+
+        function changeQty(delta) {
+            qty = Math.max(1, qty + delta);
+            document.getElementById('qtyVal').textContent = qty;
+        }
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+                function addToCart() {
+            const qty  = parseInt(document.getElementById('qtyVal').textContent);
+            const size = document.querySelector('.size-btn.active')?.textContent ?? '65ml';
+            const slug = '@productSlug';
+            const name = '@productName';
+
+            fetch('@Url.Action("AddToCart", "Shop")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug, name, size, quantity: qty })
+            })
+            .then(res => {
+                if (res.ok) {
+                    const toast = document.getElementById('toast');
+                    toast.style.display = 'block';
+                    setTimeout(() => { toast.style.display = 'none'; }, 2500);
+                } else if (res.status === 401) {
+                    window.location.href = '/account/login';
+                } else {
+                    console.error('AddToCart failed:', res.status);
+                }
+            })
+            .catch(err => console.error('Fetch error:', err));
+        }
+    </script>
+</body>
+</html>
