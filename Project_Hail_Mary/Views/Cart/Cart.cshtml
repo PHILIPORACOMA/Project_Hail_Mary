@@ -1,0 +1,279 @@
+﻿@model List<Project_Hail_Mary.Models.Cart>
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal subtotal = Model.Sum(i => i.Price * i.Quantity);
+}
+
+<style>
+    body {
+        background: #ebebeb;
+    }
+
+    .cart-overlay {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        padding: 2rem 4rem 4rem;
+    }
+
+    .cart-panel {
+        background: #fff;
+        width: 380px;
+        border-radius: 4px;
+        padding: 1.4rem 1.6rem 1.6rem;
+        position: relative;
+    }
+
+    .cart-panel-header {
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 1rem;
+        letter-spacing: 0.12em;
+        color: #111;
+        margin-bottom: 1.2rem;
+        text-transform: lowercase;
+    }
+
+    .cart-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1rem;
+        color: #aaa;
+        cursor: pointer;
+        line-height: 1;
+        text-decoration: none;
+    }
+
+        .cart-close:hover {
+            color: #333;
+        }
+
+    .cart-divider {
+        border: none;
+        border-top: 1px solid #f0f0f0;
+        margin: 0.8rem 0;
+    }
+
+    /* Product row */
+    .cart-item-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0.7rem 0;
+    }
+
+    .cart-item-img {
+        width: 48px;
+        height: 72px;
+        background: #e8e8e8;
+        border-radius: 3px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .cart-item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .cart-item-name {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #111;
+        margin: 0 0 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cart-item-variant {
+        font-size: 0.68rem;
+        color: #aaa;
+        margin: 0;
+        text-transform: capitalize;
+    }
+
+    .cart-item-price {
+        font-size: 0.78rem;
+        color: #111;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-right: 4px;
+    }
+
+    /* Qty stepper */
+    .qty-stepper {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        overflow: hidden;
+        height: 26px;
+    }
+
+    .qty-btn {
+        background: none;
+        border: none;
+        width: 28px;
+        height: 26px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: background 0.15s;
+    }
+
+        .qty-btn:hover {
+            background: #f5f5f5;
+        }
+
+    .qty-value {
+        font-size: 0.75rem;
+        min-width: 22px;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Subtotal */
+    .cart-subtotal {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 0.8rem;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .cart-subtotal-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: lowercase;
+        color: #555;
+    }
+
+    .cart-subtotal-price {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #111;
+    }
+
+    .cart-note {
+        font-size: 0.62rem;
+        color: #bbb;
+        margin: 0.4rem 0 1rem;
+    }
+
+    .cart-checkout-btn {
+        display: block;
+        width: 100%;
+        background: #1a2f6e;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 0.75rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+        .cart-checkout-btn:hover {
+            background: #0f2260;
+            color: #fff;
+        }
+
+    .empty-cart {
+        text-align: center;
+        padding: 2.5rem 0 1rem;
+        color: #aaa;
+        font-size: 0.82rem;
+    }
+
+        .empty-cart a {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: #1a2f6e;
+            text-decoration: underline;
+        }
+</style>
+
+<div class="cart-overlay">
+    <div class="cart-panel">
+        <a href="/Shop/Shop" class="cart-close">✕</a>
+        <p class="cart-panel-header">cart</p>
+        <hr class="cart-divider" />
+
+        @if (!Model.Any())
+        {
+            <div class="empty-cart">
+                <p>Your cart is empty.</p>
+                <a asp-controller="Shop" asp-action="Shop">← Continue Shopping</a>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="cart-item-row">
+                    <!-- Product image placeholder -->
+                    <div class="cart-item-img">
+                        <svg width="32" height="52" viewBox="0 0 70 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="24" y="0" width="22" height="10" rx="2.5" fill="#1a2f6e" opacity="0.7" />
+                            <rect x="27" y="9" width="16" height="16" rx="2" fill="#1a2f6e" opacity="0.85" />
+                            <rect x="6" y="23" width="58" height="84" rx="8" fill="#1a2f6e" />
+                            <rect x="13" y="52" width="44" height="32" rx="3.5" fill="rgba(255,255,255,0.1)" />
+                            <text x="35" y="71" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="6" font-family="Georgia,serif">@item.ProductName.ToLower()</text>
+                        </svg>
+                    </div>
+
+                    <div class="cart-item-info">
+                        <p class="cart-item-name">@item.ProductName</p>
+                        <p class="cart-item-variant">@item.Size</p>
+                        <!-- Qty stepper -->
+                        <div class="qty-stepper" style="margin-top:6px;">
+                            <form asp-controller="Shop" asp-action="UpdateQuantity" method="post" style="margin:0;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="cartItemId" value="@item.Id" />
+                                <input type="hidden" name="action" value="dec" />
+                                <button type="submit" class="qty-btn">−</button>
+                            </form>
+                            <span class="qty-value">@item.Quantity</span>
+                            <form asp-controller="Shop" asp-action="UpdateQuantity" method="post" style="margin:0;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="cartItemId" value="@item.Id" />
+                                <input type="hidden" name="action" value="inc" />
+                                <button type="submit" class="qty-btn">+</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <span class="cart-item-price">₱@((item.Price * item.Quantity).ToString("N2"))</span>
+                </div>
+                <hr class="cart-divider" />
+            }
+
+            <div class="cart-subtotal">
+                <span class="cart-subtotal-label">subtotal</span>
+                <span class="cart-subtotal-price">₱@subtotal.ToString("N2")</span>
+            </div>
+            <p class="cart-note">*Shipping, taxes, and discounts calculated at checkout</p>
+
+            <a asp-controller="Shop" asp-action="Checkout" class="cart-checkout-btn">Checkout</a>
+        }
+    </div>
+</div>
