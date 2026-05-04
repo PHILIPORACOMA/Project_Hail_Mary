@@ -14,7 +14,7 @@ namespace Project_Hail_Mary.Controllers
             _context = context;
         }
 
-        // GET: /Cart/Index
+        // GET: /Cart/Cart
         public async Task<IActionResult> Cart()
         {
             // Placeholder: Replace with actual logged-in User ID logic

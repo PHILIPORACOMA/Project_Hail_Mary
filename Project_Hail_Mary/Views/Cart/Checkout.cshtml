@@ -1,0 +1,378 @@
+﻿@model Project_Hail_Mary.Models.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cartItems = ViewBag.CartItems as List<Project_Hail_Mary.Models.Cart> ?? new();
+    decimal subtotal = cartItems.Sum(i => i.Price * i.Quantity);
+    decimal shipping = 0;
+    decimal taxes = 0;
+    decimal total = subtotal + shipping + taxes;
+    bool addressSubmitted = ViewBag.AddressSubmitted == true;
+}
+
+<style>
+    body {
+        background: #ebebeb;
+    }
+
+    .checkout-overlay {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        padding: 2rem 4rem 4rem;
+    }
+
+    .checkout-panel {
+        background: #fff;
+        width: 640px;
+        border-radius: 4px;
+        padding: 1.4rem 1.8rem 1.8rem;
+        position: relative;
+    }
+
+    .checkout-header {
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 1rem;
+        letter-spacing: 0.12em;
+        color: #111;
+        margin-bottom: 1.4rem;
+        text-transform: lowercase;
+    }
+
+    .checkout-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1rem;
+        color: #aaa;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+        .checkout-close:hover {
+            color: #333;
+        }
+
+    .checkout-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    /* LEFT — Shipping form */
+    .section-title {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #111;
+        margin: 0 0 0.9rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+    .co-input {
+        width: 100%;
+        border: 1px solid #e0e0e0;
+        border-radius: 3px;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.75rem;
+        color: #333;
+        outline: none;
+        box-sizing: border-box;
+        transition: border-color 0.15s;
+    }
+
+        .co-input:focus {
+            border-color: #1a2f6e;
+        }
+
+        .co-input::placeholder {
+            color: #bbb;
+        }
+
+    .default-addr-check {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin: 10px 0 14px;
+        font-size: 0.72rem;
+        color: #555;
+        cursor: pointer;
+    }
+
+        .default-addr-check input {
+            accent-color: #1a2f6e;
+            cursor: pointer;
+        }
+
+    .form-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+    }
+
+    .return-link {
+        font-size: 0.7rem;
+        color: #888;
+        text-decoration: none;
+    }
+
+        .return-link:hover {
+            color: #1a2f6e;
+        }
+
+    .submit-btn {
+        background: #1a2f6e;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 0.6rem 1.6rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+        .submit-btn:hover {
+            background: #0f2260;
+        }
+
+    /* RIGHT — Order summary */
+    .order-divider {
+        border: none;
+        border-top: 1px solid #f0f0f0;
+        margin: 0.7rem 0;
+    }
+
+    .order-item-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0.4rem 0;
+    }
+
+    .order-item-img {
+        width: 36px;
+        height: 52px;
+        background: #e8e8e8;
+        border-radius: 3px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .order-item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .order-item-name {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #111;
+        margin: 0 0 1px;
+    }
+
+    .order-item-cat {
+        font-size: 0.65rem;
+        color: #aaa;
+        margin: 0;
+        text-transform: capitalize;
+    }
+
+    .order-item-qty {
+        font-size: 0.72rem;
+        color: #888;
+    }
+
+    .order-item-price {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #111;
+        white-space: nowrap;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: #777;
+        padding: 3px 0;
+    }
+
+        .summary-row.total {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #111;
+            margin-top: 4px;
+        }
+
+    /* Payment method */
+    .payment-pill {
+        display: inline-block;
+        border: 1px solid #1a2f6e;
+        border-radius: 20px;
+        padding: 5px 18px;
+        font-size: 0.68rem;
+        color: #1a2f6e;
+        letter-spacing: 0.05em;
+        margin-top: 6px;
+        background: #fff;
+    }
+
+    /* Shipping address display */
+    .addr-display {
+        font-size: 0.72rem;
+        color: #555;
+        line-height: 1.6;
+        margin-top: 6px;
+    }
+
+    .place-order-btn {
+        display: block;
+        width: 100%;
+        margin-top: 1rem;
+        background: #1a2f6e;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 0.7rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        cursor: pointer;
+        text-align: center;
+        transition: background 0.2s;
+    }
+
+        .place-order-btn:hover {
+            background: #0f2260;
+        }
+
+    /* Disabled state on right panel before address submitted */
+    .right-panel-locked {
+        opacity: 0.45;
+        pointer-events: none;
+        user-select: none;
+    }
+</style>
+
+<div class="checkout-overlay">
+    <div class="checkout-panel">
+        <a asp-controller="Shop" asp-action="Cart" class="checkout-close">✕</a>
+        <p class="checkout-header">checkout</p>
+
+        <div class="checkout-body">
+
+            <!-- LEFT: Shipping Address Form -->
+            <div>
+                <p class="section-title">Shipping Address</p>
+                <form asp-controller="Shop" asp-action="Checkout" method="post" id="shippingForm">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-row">
+                        <input class="co-input" asp-for="FirstName" placeholder="First Name" />
+                        <input class="co-input" asp-for="LastName" placeholder="Last Name" />
+                    </div>
+                    <div class="form-row full">
+                        <input class="co-input" asp-for="Address" placeholder="House#/St" />
+                    </div>
+                    <div class="form-row">
+                        <input class="co-input" asp-for="City" placeholder="City" />
+                        <input class="co-input" asp-for="ZipCode" placeholder="Zip Code" />
+                    </div>
+                    <div class="form-row full">
+                        <input class="co-input" asp-for="Phone" placeholder="Phone" />
+                    </div>
+
+                    <label class="default-addr-check">
+                        <input type="checkbox" asp-for="IsDefaultAddress" />
+                        This is my default address
+                    </label>
+
+                    <div class="form-actions">
+                        <a asp-controller="Cart" asp-action="Cart" class="return-link">← Return to cart</a>
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- RIGHT: Order Summary -->
+            <div class="@(addressSubmitted ? "" : "right-panel-locked")">
+                <p class="section-title">Products Ordered</p>
+
+                @foreach (var item in cartItems)
+                {
+                    <div class="order-item-row">
+                        <div class="order-item-img">
+                            <svg width="22" height="36" viewBox="0 0 70 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="24" y="0" width="22" height="10" rx="2.5" fill="#1a2f6e" opacity="0.7" />
+                                <rect x="27" y="9" width="16" height="16" rx="2" fill="#1a2f6e" opacity="0.85" />
+                                <rect x="6" y="23" width="58" height="84" rx="8" fill="#1a2f6e" />
+                            </svg>
+                        </div>
+                        <div class="order-item-info">
+                            <p class="order-item-name">@item.ProductName</p>
+                        </div>
+                        <span class="order-item-qty">x@item.Quantity</span>
+                        <span class="order-item-price">₱@((item.Price * item.Quantity).ToString("N2"))</span>
+                    </div>
+                }
+
+                <hr class="order-divider" />
+                <div class="summary-row"><span>Subtotal</span><span>₱@subtotal.ToString("N2")</span></div>
+                <div class="summary-row"><span>Shipping</span><span>—</span></div>
+                <div class="summary-row"><span>Estimated Taxes</span><span>—</span></div>
+                <hr class="order-divider" />
+                <div class="summary-row total"><span>Total</span><span>₱@total.ToString("N2")</span></div>
+
+                <hr class="order-divider" style="margin-top:1rem;" />
+                <p class="section-title" style="margin-top:0.8rem;">Payment Method</p>
+                <span class="payment-pill">Cash on Delivery</span>
+
+                @if (addressSubmitted)
+                {
+                    <hr class="order-divider" style="margin-top:1rem;" />
+                    <p class="section-title" style="margin-top:0.8rem;">Shipping Address</p>
+                    <div class="addr-display">
+                        @Model.FirstName @Model.LastName<br />
+                        @Model.Address<br />
+                        @Model.City, Philippines @Model.ZipCode<br />
+                        @Model.Phone
+                    </div>
+
+                    <form asp-controller="Shop" asp-action="PlaceOrder" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="place-order-btn">Place Order</button>
+                    </form>
+                }
+                else
+                {
+                    <hr class="order-divider" style="margin-top:1rem;" />
+                    <p class="section-title" style="margin-top:0.8rem;">Shipping Address</p>
+                    <div class="addr-display" style="color:#ccc;">Fill in shipping address to continue.</div>
+                    <button class="place-order-btn" disabled style="opacity:0.4; cursor:not-allowed;">Place Order</button>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
