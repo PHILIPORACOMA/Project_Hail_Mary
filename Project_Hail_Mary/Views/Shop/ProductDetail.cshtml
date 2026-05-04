@@ -529,16 +529,17 @@
             btn.classList.add('active');
         }
 
-                function addToCart() {
-            const qty  = parseInt(document.getElementById('qtyVal').textContent);
-            const size = document.querySelector('.size-btn.active')?.textContent ?? '65ml';
-            const slug = '@productSlug';
-            const name = '@productName';
+                            function addToCart() {
+            const qty   = parseInt(document.getElementById('qtyVal').textContent);
+            const size  = document.querySelector('.size-btn.active')?.textContent ?? '65ml';
+            const slug  = '@productSlug';
+            const name  = '@productName';
+            const price = @ViewBag.ProductPriceNum;
 
-            fetch('@Url.Action("AddToCart", "Shop")', {
+            fetch('/Shop/AddToCart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ slug, name, size, quantity: qty })
+                body: JSON.stringify({ slug, name, size, quantity: qty, price })
             })
             .then(res => {
                 if (res.ok) {

@@ -14,21 +14,22 @@ namespace Project_Hail_Mary.Controllers
             _context = context;
         }
 
-        // GET: /Cart/Cart
-        public async Task<IActionResult> Cart()
-        {
-            // Placeholder: Replace with actual logged-in User ID logic
-            int currentUserId = 1;
+		// GET: /Cart/Cart
+		public async Task<IActionResult> Cart()
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			if (userId == null)
+				return RedirectToAction("Login", "Account");
 
-            var cartItems = await _context.Cart
-                .Where(c => c.UserId == currentUserId)
-                .ToListAsync();
+			var cartItems = await _context.Cart
+				.Where(c => c.UserId == userId)
+				.ToListAsync();
 
-            return View(cartItems);
-        }
+			return View(cartItems);
+		}
 
-        // POST: /Cart/UpdateQuantity
-        [HttpPost]
+		// POST: /Cart/UpdateQuantity
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateQuantity(int cartItemId, string action)
         {
