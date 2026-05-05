@@ -103,14 +103,16 @@
             position: absolute;
             right: 0;
             top: calc(100% + 8px);
-            background: #fff;
+            background: #0d1b3e;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(13,27,62,0.18);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             min-width: 190px;
             padding: 8px 0;
             z-index: 1000;
             animation: dropIn 0.18s ease;
         }
+
 
         @@keyframes dropIn {
             from {
@@ -134,50 +136,50 @@
 
         .dropdown-header {
             padding: 12px 18px 8px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             margin-bottom: 4px;
         }
 
             .dropdown-header strong {
                 display: block;
                 font-size: 0.85rem;
-                color: #111;
+                color: #fff;
                 font-weight: 600;
             }
 
             .dropdown-header span {
                 font-size: 0.73rem;
-                color: #888;
+                color: rgba(255, 255, 255, 0.45);
             }
 
         .dropdown-item-custom {
             display: block;
             padding: 9px 18px;
             font-size: 0.78rem;
-            color: #333;
+            color: rgba(255, 255, 255, 0.75);
             text-decoration: none;
             letter-spacing: 0.04em;
             transition: background 0.15s;
         }
 
             .dropdown-item-custom:hover {
-                background: #f5f5f5;
-                color: #0d1b3e;
+                background: rgba(255, 255, 255, 0.07);
+                color: #fff;
             }
 
         .dropdown-divider-custom {
             height: 1px;
-            background: #f0f0f0;
+            background: rgba(255, 255, 255, 0.08);
             margin: 4px 0;
         }
 
         .dropdown-item-custom.logout-item {
-            color: #c0392b;
+            color: #e07070;
         }
 
             .dropdown-item-custom.logout-item:hover {
-                background: #fdf0ef;
-                color: #c0392b;
+                background: rgba(220, 80, 80, 0.12);
+                color: #ff9090;
             }
 
         .brand-name {
