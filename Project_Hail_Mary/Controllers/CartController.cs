@@ -14,68 +14,129 @@ namespace Project_Hail_Mary.Controllers
             _context = context;
         }
 
-		// GET: /Cart/Cart
-		public async Task<IActionResult> Cart()
-		{
-			var userId = HttpContext.Session.GetInt32("UserId");
-			if (userId == null)
-				return RedirectToAction("Login", "Account");
-
-			var cartItems = await _context.Cart
-				.Where(c => c.UserId == userId)
-				.ToListAsync();
-
-			return View(cartItems);
-		}
-
-		// POST: /Cart/UpdateQuantity
-		[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateQuantity(int cartItemId, string action)
+        // ─── Cart Page ───────────────────────────────────────────
+        [HttpGet]
+        public IActionResult Cart()
         {
-            var item = await _context.Cart.FindAsync(cartItemId);
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
 
+            var items = _context.Cart
+                .Where(c => c.UserId == userId)
+                .OrderByDescending(c => c.Id)
+                .ToList();
+
+            return View(items);
+        }
+
+        // ─── Update Quantity (+/−) ───────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateQuantity(int cartItemId, string action)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
+
+            var item = _context.Cart.FirstOrDefault(c => c.Id == cartItemId && c.UserId == userId);
             if (item != null)
             {
                 if (action == "inc")
+                    item.Quantity++;
+                else if (action == "dec")
                 {
-                    item.Quantity++; 
+                    item.Quantity--;
+                    if (item.Quantity <= 0)
+                        _context.Cart.Remove(item);
                 }
-                else if (action == "dec" && item.Quantity > 1)
-                {
-                    item.Quantity--; 
-                }
-                else if (action == "dec" && item.Quantity == 1)
-                {
-                    _context.Cart.Remove(item);
-                }
-
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Cart");
         }
 
-        // GET: /Cart/Checkout
-        public IActionResult Checkout()
-        {
-            return View(new CheckoutViewModel()); 
-        }
-
-        // POST: /Cart/Checkout
+        // ─── Remove Item ─────────────────────────────────────────
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(CheckoutViewModel model)
+        public IActionResult RemoveFromCart(int cartItemId)
         {
-            if (ModelState.IsValid) 
-            {
-                // TODO: Logic to process the order using model properties:
-                // model.FirstName, model.LastName, model.Address, etc.
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
 
-                return RedirectToAction("OrderConfirmation");
+            var item = _context.Cart.FirstOrDefault(c => c.Id == cartItemId && c.UserId == userId);
+            if (item != null)
+            {
+                _context.Cart.Remove(item);
+                _context.SaveChanges();
             }
 
+            return RedirectToAction("Cart");
+        }
+
+        // ─── Checkout GET ────────────────────────────────────────
+        [HttpGet]
+        public IActionResult Checkout()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
+
+            var items = _context.Cart
+                .Where(c => c.UserId == userId)
+                .OrderByDescending(c => c.Id)
+                .ToList();
+
+            if (!items.Any())
+                return RedirectToAction("Cart");
+
+            ViewBag.CartItems = items;
+            return View(new CheckoutViewModel
+            {
+                FirstName = HttpContext.Session.GetString("UserFirstName") ?? "",
+                LastName = HttpContext.Session.GetString("UserLastName") ?? ""
+            });
+        }
+
+        // ─── Checkout POST ───────────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Checkout(CheckoutViewModel model)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
+
+            var items = _context.Cart
+                .Where(c => c.UserId == userId)
+                .OrderByDescending(c => c.Id)
+                .ToList();
+
+            ViewBag.CartItems = items;
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            ViewBag.AddressSubmitted = true;
             return View(model);
+        }
+
+        // ─── Place Order ─────────────────────────────────────────
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PlaceOrder()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
+
+            var items = _context.Cart.Where(c => c.UserId == userId).ToList();
+            _context.Cart.RemoveRange(items);
+            _context.SaveChanges();
+
+            TempData["OrderSuccess"] = "Your order has been placed!";
+            return RedirectToAction("Shop", "Shop");
         }
     }
 }

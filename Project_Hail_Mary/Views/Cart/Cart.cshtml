@@ -7,7 +7,8 @@
 
 <style>
     body {
-        background: #ebebeb;
+        background: #f8f9fa;
+        font-family: 'DM Sans', sans-serif;
     }
 
     .cart-overlay {
@@ -15,68 +16,83 @@
         display: flex;
         align-items: flex-start;
         justify-content: flex-end;
-        padding: 2rem 4rem 4rem;
+        padding: 4rem;
+    }
+
+    @@media (max-width: 768px) {
+        .cart-overlay {
+            padding: 1rem;
+            justify-content: center;
+        }
     }
 
     .cart-panel {
         background: #fff;
-        width: 380px;
-        border-radius: 4px;
-        padding: 1.4rem 1.6rem 1.6rem;
+        width: 420px;
+        border-radius: 12px;
+        padding: 2rem;
         position: relative;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.08);
     }
 
     .cart-panel-header {
-        text-align: center;
+        text-align: left;
         font-family: 'Playfair Display', serif;
-        font-size: 1rem;
-        letter-spacing: 0.12em;
+        font-size: 1.5rem;
+        font-weight: 700;
         color: #111;
-        margin-bottom: 1.2rem;
-        text-transform: lowercase;
+        margin-bottom: 1.5rem;
     }
 
     .cart-close {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: none;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: #f5f5f5;
         border: none;
-        font-size: 1rem;
-        color: #aaa;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: #666;
         cursor: pointer;
-        line-height: 1;
         text-decoration: none;
+        transition: all 0.2s;
     }
 
-        .cart-close:hover {
-            color: #333;
-        }
+    .cart-close:hover {
+        background: #1a2f6e;
+        color: #fff;
+    }
 
     .cart-divider {
         border: none;
-        border-top: 1px solid #f0f0f0;
-        margin: 0.8rem 0;
+        border-top: 1px solid #eee;
+        margin: 1rem 0;
     }
 
     /* Product row */
     .cart-item-row {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 0.7rem 0;
+        gap: 16px;
+        padding: 1rem 0;
     }
 
     .cart-item-img {
-        width: 48px;
-        height: 72px;
-        background: #e8e8e8;
-        border-radius: 3px;
+        width: 60px;
+        height: 80px;
+        background: linear-gradient(135deg, #0d1b3e 0%, #1a2f6e 100%);
+        border-radius: 8px;
         flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        box-shadow: 0 4px 12px rgba(26, 47, 110, 0.2);
     }
 
     .cart-item-info {
@@ -85,64 +101,66 @@
     }
 
     .cart-item-name {
-        font-size: 0.78rem;
+        font-size: 0.9rem;
         font-weight: 600;
         color: #111;
-        margin: 0 0 2px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        margin: 0 0 4px;
     }
 
     .cart-item-variant {
-        font-size: 0.68rem;
-        color: #aaa;
-        margin: 0;
-        text-transform: capitalize;
+        font-size: 0.75rem;
+        color: #888;
+        margin: 0 0 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     .cart-item-price {
-        font-size: 0.78rem;
+        font-size: 0.9rem;
         color: #111;
-        font-weight: 500;
-        white-space: nowrap;
-        margin-right: 4px;
+        font-weight: 700;
     }
 
     /* Qty stepper */
     .qty-stepper {
         display: flex;
         align-items: center;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        overflow: hidden;
-        height: 26px;
+        background: #f8f9fa;
+        border-radius: 50px;
+        padding: 2px;
+        width: fit-content;
     }
 
     .qty-btn {
-        background: none;
-        border: none;
-        width: 28px;
-        height: 26px;
+        background: #fff;
+        border: 1px solid #eee;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
         cursor: pointer;
-        font-size: 0.85rem;
-        color: #555;
+        font-size: 0.8rem;
+        color: #111;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 0;
-        transition: background 0.15s;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-        .qty-btn:hover {
-            background: #f5f5f5;
-        }
+    .qty-btn:hover {
+        background: #1a2f6e;
+        color: #fff;
+        border-color: #1a2f6e;
+    }
 
     .qty-value {
-        font-size: 0.75rem;
-        min-width: 22px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0 10px;
+        min-width: 30px;
         text-align: center;
-        color: #333;
+        color: #111;
     }
 
     /* Subtotal */
@@ -150,28 +168,30 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 1rem;
-        padding-top: 0.8rem;
-        border-top: 1px solid #f0f0f0;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid #f8f9fa;
     }
 
     .cart-subtotal-label {
-        font-size: 0.72rem;
-        letter-spacing: 0.08em;
-        text-transform: lowercase;
-        color: #555;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        color: #888;
     }
 
     .cart-subtotal-price {
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #111;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1a2f6e;
     }
 
     .cart-note {
-        font-size: 0.62rem;
-        color: #bbb;
-        margin: 0.4rem 0 1rem;
+        font-size: 0.7rem;
+        color: #aaa;
+        margin: 0.5rem 0 1.5rem;
+        text-align: center;
     }
 
     .cart-checkout-btn {
@@ -180,36 +200,55 @@
         background: #1a2f6e;
         color: #fff;
         border: none;
-        border-radius: 3px;
-        padding: 0.75rem;
-        font-size: 0.7rem;
-        letter-spacing: 0.16em;
+        border-radius: 8px;
+        padding: 1rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.15em;
         text-transform: uppercase;
+        font-weight: 700;
         text-align: center;
         cursor: pointer;
         text-decoration: none;
-        transition: background 0.2s;
+        transition: all 0.3s;
+        box-shadow: 0 10px 20px rgba(26, 47, 110, 0.2);
     }
 
-        .cart-checkout-btn:hover {
-            background: #0f2260;
-            color: #fff;
-        }
+    .cart-checkout-btn:hover {
+        background: #0f2260;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(26, 47, 110, 0.3);
+    }
 
     .empty-cart {
         text-align: center;
-        padding: 2.5rem 0 1rem;
-        color: #aaa;
-        font-size: 0.82rem;
+        padding: 3rem 0;
     }
 
-        .empty-cart a {
-            display: inline-block;
-            margin-top: 1rem;
-            font-size: 0.7rem;
-            color: #1a2f6e;
-            text-decoration: underline;
-        }
+    .empty-cart p {
+        color: #888;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-cart a {
+        display: inline-block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #1a2f6e;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0.8rem 1.5rem;
+        border: 2px solid #1a2f6e;
+        border-radius: 50px;
+        transition: all 0.2s;
+    }
+
+    .empty-cart a:hover {
+        background: #1a2f6e;
+        color: #fff;
+    }
 </style>
 
 <div class="cart-overlay">
@@ -246,14 +285,14 @@
                         <p class="cart-item-variant">@item.Size</p>
                         <!-- Qty stepper -->
                         <div class="qty-stepper" style="margin-top:6px;">
-                            <form asp-controller="Shop" asp-action="UpdateQuantity" method="post" style="margin:0;">
+                            <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="margin:0;">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="cartItemId" value="@item.Id" />
                                 <input type="hidden" name="action" value="dec" />
                                 <button type="submit" class="qty-btn">−</button>
                             </form>
                             <span class="qty-value">@item.Quantity</span>
-                            <form asp-controller="Shop" asp-action="UpdateQuantity" method="post" style="margin:0;">
+                            <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="margin:0;">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="cartItemId" value="@item.Id" />
                                 <input type="hidden" name="action" value="inc" />

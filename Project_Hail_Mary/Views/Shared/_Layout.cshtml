@@ -337,7 +337,16 @@
                 {
                     <li><a asp-controller="Account" asp-action="Login">Account</a></li>
                 }
-                <li><a asp-controller="Cart" asp-action="Cart">Cart (0)</a></li>
+                @{
+                    int cartCount = 0;
+                    var navUserId = Context.Session.GetInt32("UserId");
+                    if (navUserId.HasValue)
+                    {
+                        var db = Context.RequestServices.GetService<AppDbContext>();
+                        cartCount = db?.Cart.Where(c => c.UserId == navUserId.Value).Sum(c => c.Quantity) ?? 0;
+                    }
+                }
+                <li><a asp-controller="Cart" asp-action="Cart">Cart (@cartCount)</a></li>
             </ul>
         </nav>
     </header>

@@ -421,7 +421,7 @@
                         <div class="card-tag">
                             <span class="tag-num">24H</span>
                             <span class="tag-label">Last Longer</span>
-                            <span class="tag-num" style="margin-top:0.5rem;">65 ML</span>
+                            <span class="tag-num" id="cardSizeTag" style="margin-top:0.5rem;">65 ML</span>
                         </div>
                         <div class="card-socials">
                             &#9679; bazarscents.com<br>
@@ -481,8 +481,8 @@
                         <!-- Size -->
                         <div class="choose-label">choose size</div>
                         <div class="size-options">
-                            <button class="size-btn active" onclick="selectSize(this)">65ml</button>
-                            <button class="size-btn" onclick="selectSize(this)">100ml</button>
+                            <button class="size-btn active" onclick="selectSize(this, 389)">65ml</button>
+                            <button class="size-btn" onclick="selectSize(this, 589)">100ml</button>
                         </div>
 
                         <!-- Quantity -->
@@ -518,23 +518,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let qty = 1;
+        let currentPrice = 389;
 
         function changeQty(delta) {
             qty = Math.max(1, qty + delta);
             document.getElementById('qtyVal').textContent = qty;
         }
 
-        function selectSize(btn) {
+        function selectSize(btn, price) {
             document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            currentPrice = price;
+            
+            // Update displayed price
+            const priceDisplay = document.querySelector('.product-price');
+            if (priceDisplay) {
+                priceDisplay.textContent = '₱' + price.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            // Update card tag
+            const sizeTag = document.getElementById('cardSizeTag');
+            if (sizeTag) {
+                sizeTag.textContent = btn.textContent.toUpperCase().replace('ML', ' ML');
+            }
         }
 
-                            function addToCart() {
+        function addToCart() {
             const qty   = parseInt(document.getElementById('qtyVal').textContent);
             const size  = document.querySelector('.size-btn.active')?.textContent ?? '65ml';
             const slug  = '@productSlug';
             const name  = '@productName';
-            const price = @ViewBag.ProductPriceNum;
+            const price = currentPrice;
 
             fetch('/Shop/AddToCart', {
                 method: 'POST',
