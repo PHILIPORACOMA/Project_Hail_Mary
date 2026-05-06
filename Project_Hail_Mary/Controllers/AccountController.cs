@@ -89,5 +89,19 @@ namespace Project_Hail_Mary.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
-    }
+
+		[HttpGet("profile")]
+		public IActionResult Profile()
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			if (userId == null)
+				return RedirectToAction("Login");
+
+			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
+			if (user == null)
+				return RedirectToAction("Login");
+
+			return View(user);
+		}
+	}
 }

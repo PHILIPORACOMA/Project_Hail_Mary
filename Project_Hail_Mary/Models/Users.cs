@@ -31,5 +31,7 @@ namespace Project_Hail_Mary.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
-    }
+
+		public string? Address { get; set; }
+	}
 }
