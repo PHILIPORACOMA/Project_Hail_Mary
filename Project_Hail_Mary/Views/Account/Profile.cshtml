@@ -19,13 +19,34 @@
 
         <!-- Avatar + greeting -->
         <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1.5rem;">
-            <div>
-                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="36" cy="36" r="35" stroke="#111" stroke-width="1.5" fill="none" />
-                    <circle cx="36" cy="28" r="11" stroke="#111" stroke-width="1.5" fill="none" />
-                    <path d="M10 62c0-14.36 11.64-26 26-26s26 11.64 26 26" stroke="#111" stroke-width="1.5" fill="none" stroke-linecap="round" />
-                </svg>
-                <a href="#" style="display:block; font-size:0.68rem; text-align:center; color:#111; margin-top:6px; text-decoration:underline; text-underline-offset:2px;">Edit Profile Picture</a>
+            <div style="text-align:center;">
+                <!-- Profile picture upload form -->
+                <form asp-controller="Account" asp-action="UploadPicture" method="post"
+                      enctype="multipart/form-data" style="margin:0;">
+                    @Html.AntiForgeryToken()
+                    <label for="picInput" style="cursor:pointer; display:block;">
+                        @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                        {
+                            <img src="@Model.ProfilePicture" alt="Profile"
+                                 style="width:72px; height:72px; border-radius:50%; object-fit:cover; border:1.5px solid #ddd;" />
+                        }
+                        else
+                        {
+                            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="36" cy="36" r="35" stroke="#111" stroke-width="1.5" fill="none" />
+                                <circle cx="36" cy="28" r="11" stroke="#111" stroke-width="1.5" fill="none" />
+                                <path d="M10 62c0-14.36 11.64-26 26-26s26 11.64 26 26" stroke="#111" stroke-width="1.5" fill="none" stroke-linecap="round" />
+                            </svg>
+                        }
+                    </label>
+                    <input id="picInput" type="file" name="profilePicture" accept="image/*"
+                           style="display:none;" onchange="this.form.submit()" />
+                </form>
+                <span style="display:block; font-size:0.68rem; color:#111; margin-top:6px;
+                             text-decoration:underline; text-underline-offset:2px; cursor:pointer;"
+                      onclick="document.getElementById('picInput').click()">
+                    Edit Profile Picture
+                </span>
             </div>
             <h1 style="font-size:2rem; font-weight:700; margin:0; color:#111;">Hi, @Model.FirstName!</h1>
         </div>
@@ -34,35 +55,67 @@
 
         <!-- Your Info -->
         <p style="font-size:0.82rem; font-weight:600; color:#111; margin:0 0 1rem;">Your Info</p>
-
         <div style="margin-bottom:1rem;">
             <p style="font-size:0.75rem; font-weight:600; color:#111; margin:0 0 3px;">Name</p>
             <p style="font-size:0.85rem; color:#444; margin:0; padding-left:8px;">@Model.FirstName @Model.LastName</p>
         </div>
-
         <div style="margin-bottom:1.8rem;">
             <p style="font-size:0.75rem; font-weight:600; color:#111; margin:0 0 3px;">Email</p>
             <p style="font-size:0.85rem; color:#444; margin:0; padding-left:8px;">@Model.Email</p>
         </div>
 
-        <!-- Default Address -->
-        <div style="margin-bottom:1.2rem;">
-            <p style="font-size:0.82rem; font-weight:600; color:#111; margin:0 0 0.6rem;">Default Address</p>
-            <p style="font-size:0.85rem; color:#444; margin:0 0 1rem; padding:8px 12px; background:#f7f7f7; border-radius:6px; display:inline-block;">
-                @(Model.Address ?? "Philippines")
-            </p>
-        </div>
+        <hr style="border:none; border-top:1px solid #e0e0e0; margin:0 0 1.5rem;" />
 
-        <button style="padding:10px 28px; background:none; border:1.5px solid #111; border-radius:30px; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif;">
-            Change Default Address
-        </button>
+        <!-- Default Address -->
+        <p style="font-size:0.82rem; font-weight:600; color:#111; margin:0 0 0.6rem;">Default Address</p>
+
+        @if (ViewBag.EditingAddress == true)
+        {
+            <form asp-controller="Account" asp-action="UpdateAddress" method="post" style="margin:0 0 1rem;">
+                @Html.AntiForgeryToken()
+                <input type="text" name="address" value="@Model.Address"
+                       placeholder="Enter your address"
+                       style="padding:8px 14px; border:1.5px solid #111; border-radius:30px;
+                                  font-size:0.85rem; width:100%; max-width:320px;
+                                  font-family:'DM Sans',sans-serif; margin-bottom:10px;" />
+                <br />
+                <button type="submit"
+                        style="padding:9px 24px; background:#0d1b3e; color:#fff; border:none;
+                                   border-radius:30px; font-size:0.68rem; letter-spacing:0.12em;
+                                   text-transform:uppercase; font-weight:600; cursor:pointer;
+                                   font-family:'DM Sans',sans-serif; margin-right:8px;">
+                    Save
+                </button>
+                <a asp-controller="Account" asp-action="Profile"
+                   style="font-size:0.72rem; color:#888; text-decoration:underline;">Cancel</a>
+            </form>
+        }
+        else
+        {
+            <p style="font-size:0.85rem; color:#444; margin:0 0 1rem;
+                          padding:8px 12px; background:#f7f7f7; border-radius:6px; display:inline-block;">
+                @(string.IsNullOrEmpty(Model.Address) ? "No address set" : Model.Address)
+            </p>
+            <br />
+            <a asp-controller="Account" asp-action="Profile" asp-route-edit="address"
+               style="display:inline-block; margin-top:8px; padding:10px 28px; background:none;
+                          border:1.5px solid #111; border-radius:30px; font-size:0.68rem;
+                          letter-spacing:0.12em; text-transform:uppercase; font-weight:600;
+                          cursor:pointer; font-family:'DM Sans',sans-serif; text-decoration:none; color:#111;">
+                Change Default Address
+            </a>
+        }
 
         <hr style="border:none; border-top:1px solid #e0e0e0; margin:2rem 0;" />
 
         <!-- Logout -->
         <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
             @Html.AntiForgeryToken()
-            <button type="submit" style="padding:10px 32px; background:none; border:1.5px solid #111; border-radius:30px; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif;">
+            <button type="submit"
+                    style="padding:10px 32px; background:none; border:1.5px solid #111;
+                           border-radius:30px; font-size:0.68rem; letter-spacing:0.12em;
+                           text-transform:uppercase; font-weight:600; cursor:pointer;
+                           font-family:'DM Sans',sans-serif;">
                 Logout
             </button>
         </form>

@@ -33,5 +33,8 @@ namespace Project_Hail_Mary.Models
         public string ConfirmPassword { get; set; }
 
 		public string? Address { get; set; }
+
+		public string? ProfilePicture { get; set; }
 	}
+
 }
