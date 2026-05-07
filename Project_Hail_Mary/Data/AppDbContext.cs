@@ -9,4 +9,6 @@ public class AppDbContext : DbContext
 
 	public DbSet<Users> Users { get; set; }
 	public DbSet<Cart> Cart { get; set; }
+	public DbSet<Order> Orders { get; set; }
+	public DbSet<OrderItem> OrderItems { get; set; }
 }

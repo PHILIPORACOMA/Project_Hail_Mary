@@ -144,6 +144,21 @@ namespace Project_Hail_Mary.Controllers
                 return View(model);
             }
 
+            // Store checkout info in session for PlaceOrder
+            HttpContext.Session.SetString("Checkout_FullName", $"{model.FirstName} {model.LastName}");
+            HttpContext.Session.SetString("Checkout_Address", $"{model.Address}, {model.City}, {model.ZipCode}");
+            HttpContext.Session.SetString("Checkout_Phone", model.Phone);
+
+            if (model.IsDefaultAddress)
+            {
+                var user = _context.Users.Find(userId.Value);
+                if (user != null)
+                {
+                    user.Address = $"{model.Address}, {model.City}, {model.ZipCode}";
+                    _context.SaveChanges();
+                }
+            }
+
             ViewBag.AddressSubmitted = true;
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 return PartialView("_CheckoutPartial", model);
@@ -161,11 +176,42 @@ namespace Project_Hail_Mary.Controllers
                 return RedirectToAction("Login", "Account");
 
             var items = _context.Cart.Where(c => c.UserId == userId).ToList();
+            if (!items.Any())
+                return RedirectToAction("Shop", "Shop");
+
+            var fullName = HttpContext.Session.GetString("Checkout_FullName") ?? "Unknown";
+            var address = HttpContext.Session.GetString("Checkout_Address") ?? "No Address";
+            var phone = HttpContext.Session.GetString("Checkout_Phone") ?? "0000000000";
+
+            var order = new Order
+            {
+                UserId = userId.Value,
+                FullName = fullName,
+                Address = address,
+                PhoneNumber = phone,
+                OrderDate = DateTime.UtcNow,
+                Status = "Processing",
+                TotalAmount = items.Sum(i => i.Price * i.Quantity)
+            };
+
+            foreach (var item in items)
+            {
+                order.Items.Add(new OrderItem
+                {
+                    ProductSlug = item.ProductSlug ?? "",
+                    ProductName = item.ProductName ?? "",
+                    Size = item.Size ?? "",
+                    Quantity = item.Quantity,
+                    Price = item.Price
+                });
+            }
+
+            _context.Orders.Add(order);
             _context.Cart.RemoveRange(items);
             _context.SaveChanges();
 
             TempData["OrderSuccess"] = "Your order has been placed!";
-            return RedirectToAction("Shop", "Shop");
+            return RedirectToAction("Orders", "Account");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Project_Hail_Mary.Models;
 
 namespace Project_Hail_Mary.Controllers
@@ -90,8 +91,24 @@ namespace Project_Hail_Mary.Controllers
             return RedirectToAction("Login");
         }
 
+		[HttpGet("orders")]
+		public IActionResult Orders()
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			if (userId == null)
+				return RedirectToAction("Login");
+
+			var orders = _db.Orders
+				.Include(o => o.Items)
+				.Where(o => o.UserId == userId.Value)
+				.OrderByDescending(o => o.OrderDate)
+				.ToList();
+
+			return View(orders);
+		}
+
 		[HttpGet("profile")]
-		public IActionResult Profile()
+		public IActionResult Profile(string? edit)
 		{
 			var userId = HttpContext.Session.GetInt32("UserId");
 			if (userId == null)
@@ -100,6 +117,11 @@ namespace Project_Hail_Mary.Controllers
 			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
 			if (user == null)
 				return RedirectToAction("Login");
+
+			if (edit == "address")
+			{
+				ViewBag.EditingAddress = true;
+			}
 
 			return View(user);
 		}

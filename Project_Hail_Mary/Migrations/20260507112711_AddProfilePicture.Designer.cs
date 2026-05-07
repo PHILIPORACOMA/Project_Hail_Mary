@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Project_Hail_Mary.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260507110538_AddProfilePicture")]
+    [Migration("20260507112711_AddProfilePicture")]
     partial class AddProfilePicture
     {
         /// <inheritdoc />
@@ -73,6 +73,9 @@ namespace Project_Hail_Mary.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConfirmPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -95,6 +98,9 @@ namespace Project_Hail_Mary.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

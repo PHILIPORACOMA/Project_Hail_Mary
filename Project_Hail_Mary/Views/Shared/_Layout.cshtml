@@ -341,7 +341,7 @@
                                 <span>@sessionEmail</span>
                             </div>
                             <a asp-controller="Account" asp-action="Profile" class="dropdown-item-custom">My Profile</a>
-                            <a href="#" class="dropdown-item-custom">My Orders</a>
+                            <a asp-controller="Account" asp-action="Orders" class="dropdown-item-custom">My Orders</a>
                             <div class="dropdown-divider-custom"></div>
                             <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
                                 @Html.AntiForgeryToken()
