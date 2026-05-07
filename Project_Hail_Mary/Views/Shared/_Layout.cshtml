@@ -190,6 +190,23 @@
             text-decoration: none;
         }
 
+        /* Cart Side Drawer Transition */
+        .modal.fade .modal-dialog.modal-side-drawer {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            margin: 0;
+            margin-left: auto;
+            height: 100%;
+        }
+        .modal.show .modal-dialog.modal-side-drawer {
+            transform: translateX(0);
+        }
+        .modal-side-drawer .modal-content {
+            height: 100%;
+            border-radius: 0;
+            border: none;
+        }
+
         .brand-sub {
             display: block;
             font-size: 0.52rem;
@@ -346,12 +363,30 @@
                         cartCount = db?.Cart.Where(c => c.UserId == navUserId.Value).Sum(c => c.Quantity) ?? 0;
                     }
                 }
-                <li><a asp-controller="Cart" asp-action="Cart">Cart (@cartCount)</a></li>
+                <li><a href="javascript:void(0)" onclick="openCartModal()">Cart (<span id="cart-count">@cartCount</span>)</a></li>
             </ul>
         </nav>
     </header>
 
     @RenderBody()
+
+    <!-- Cart Modal (Side Drawer) -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-side-drawer modal-md">
+            <div class="modal-content" id="cartModalContent">
+                <!-- Content loaded via AJAX -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" id="checkoutModalContent">
+                <!-- Content loaded via AJAX -->
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
@@ -363,6 +398,114 @@
         document.addEventListener('click', function () {
             document.getElementById('profileDropdown')?.classList.remove('open');
         });
+
+        // Cart & Checkout Logic
+        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+        const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+
+        function openCartModal() {
+            fetch('/Cart/Cart', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => {
+                    if (r.status === 401) {
+                        window.location.href = '/Account/Login';
+                        return;
+                    }
+                    return r.text();
+                })
+                .then(html => {
+                    if (html) {
+                        document.getElementById('cartModalContent').innerHTML = html;
+                        cartModal.show();
+                    }
+                });
+        }
+
+        function updateCartQuantity(id, action) {
+            const formData = new FormData();
+            formData.append('cartItemId', id);
+            formData.append('action', action);
+            formData.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]')?.value || '');
+
+            fetch('/Cart/UpdateQuantity', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }).then(r => r.text()).then(html => {
+                document.getElementById('cartModalContent').innerHTML = html;
+                refreshCartCount();
+            });
+        }
+
+        function removeFromCart(id) {
+            const formData = new FormData();
+            formData.append('cartItemId', id);
+            formData.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]')?.value || '');
+
+            fetch('/Cart/RemoveFromCart', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }).then(r => r.text()).then(html => {
+                document.getElementById('cartModalContent').innerHTML = html;
+                refreshCartCount();
+            });
+        }
+
+        function openCheckout() {
+            cartModal.hide();
+            fetch('/Cart/Checkout', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.text())
+                .then(html => {
+                    document.getElementById('checkoutModalContent').innerHTML = html;
+                    checkoutModal.show();
+                });
+        }
+
+        function submitCheckout(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch('/Cart/Checkout', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }).then(r => r.text()).then(html => {
+                document.getElementById('checkoutModalContent').innerHTML = html;
+            });
+        }
+
+        function placeOrder(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch('/Cart/PlaceOrder', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }).then(r => {
+                if (r.redirected) {
+                    window.location.href = r.url;
+                }
+            });
+        }
+
+        function refreshCartCount() {
+            fetch('/Cart/Cart', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const items = doc.querySelectorAll('.cart-item-row');
+                    let count = 0;
+                    items.forEach(item => {
+                        const qtyText = item.querySelector('.qty-value')?.textContent || item.querySelector('.px-2.fw-bold')?.textContent;
+                        if (qtyText) count += parseInt(qtyText);
+                    });
+                    document.getElementById('cart-count').textContent = count;
+                });
+        }
     </script>
 </body>
 </html>

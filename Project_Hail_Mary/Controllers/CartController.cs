@@ -20,12 +20,19 @@ namespace Project_Hail_Mary.Controllers
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
+            {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    return Unauthorized();
                 return RedirectToAction("Login", "Account");
+            }
 
             var items = _context.Cart
                 .Where(c => c.UserId == userId)
                 .OrderByDescending(c => c.Id)
                 .ToList();
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return PartialView("_CartPartial", items);
 
             return View(items);
         }
@@ -53,6 +60,9 @@ namespace Project_Hail_Mary.Controllers
                 _context.SaveChanges();
             }
 
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return RedirectToAction("Cart");
+
             return RedirectToAction("Cart");
         }
 
@@ -72,6 +82,9 @@ namespace Project_Hail_Mary.Controllers
                 _context.SaveChanges();
             }
 
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return RedirectToAction("Cart");
+
             return RedirectToAction("Cart");
         }
 
@@ -89,14 +102,23 @@ namespace Project_Hail_Mary.Controllers
                 .ToList();
 
             if (!items.Any())
+            {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    return RedirectToAction("Cart");
                 return RedirectToAction("Cart");
+            }
 
             ViewBag.CartItems = items;
-            return View(new CheckoutViewModel
+            var model = new CheckoutViewModel
             {
                 FirstName = HttpContext.Session.GetString("UserFirstName") ?? "",
                 LastName = HttpContext.Session.GetString("UserLastName") ?? ""
-            });
+            };
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return PartialView("_CheckoutPartial", model);
+
+            return View(model);
         }
 
         // ─── Checkout POST ───────────────────────────────────────
@@ -116,9 +138,16 @@ namespace Project_Hail_Mary.Controllers
             ViewBag.CartItems = items;
 
             if (!ModelState.IsValid)
+            {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    return PartialView("_CheckoutPartial", model);
                 return View(model);
+            }
 
             ViewBag.AddressSubmitted = true;
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return PartialView("_CheckoutPartial", model);
+
             return View(model);
         }
 

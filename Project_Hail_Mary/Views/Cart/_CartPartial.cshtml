@@ -1,0 +1,66 @@
+@model List<Project_Hail_Mary.Models.Cart>
+@{
+    decimal subtotal = Model.Sum(i => i.Price * i.Quantity);
+}
+
+<div class="modal-header border-0 pb-0">
+    <h1 class="modal-title fs-4 fw-bold" style="font-family: 'Playfair Display', serif;">Your Cart</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body py-4">
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <p class="text-muted mb-4">Your cart is empty.</p>
+            <button type="button" class="btn btn-outline-dark rounded-pill px-4" data-bs-dismiss="modal">← Continue Shopping</button>
+        </div>
+    }
+    else
+    {
+        <div class="cart-items-container">
+            @foreach (var item in Model)
+            {
+                <div class="cart-item-row d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+                    <div class="cart-item-img flex-shrink-0" style="width: 60px; height: 80px; background: linear-gradient(135deg, #0d1b3e 0%, #1a2f6e 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <svg width="32" height="52" viewBox="0 0 70 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="24" y="0" width="22" height="10" rx="2.5" fill="#fff" opacity="0.7" />
+                            <rect x="6" y="23" width="58" height="84" rx="8" fill="#fff" opacity="0.3" />
+                            <text x="35" y="71" text-anchor="middle" fill="#fff" font-size="8" font-family="Georgia,serif">@item.ProductName[0]</text>
+                        </svg>
+                    </div>
+
+                    <div class="cart-item-info flex-grow-1">
+                        <p class="mb-0 fw-bold small">@item.ProductName</p>
+                        <p class="text-muted mb-2" style="font-size: 0.75rem; text-transform: uppercase;">@item.Size</p>
+                        
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="qty-stepper d-flex align-items-center bg-light rounded-pill p-1">
+                                <button type="button" class="btn btn-sm btn-white border rounded-circle p-0" style="width:24px; height:24px;" onclick="updateCartQuantity(@item.Id, 'dec')">−</button>
+                                <span class="px-2 fw-bold" style="font-size: 0.8rem;">@item.Quantity</span>
+                                <button type="button" class="btn btn-sm btn-white border rounded-circle p-0" style="width:24px; height:24px;" onclick="updateCartQuantity(@item.Id, 'inc')">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <span class="fw-bold d-block" style="font-size: 0.9rem;">₱@((item.Price * item.Quantity).ToString("N2"))</span>
+                        <button type="button" class="btn btn-link text-danger p-0 mt-1" style="font-size: 0.7rem; text-decoration: none;" onclick="removeFromCart(@item.Id)">Remove</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="mt-4 pt-3 border-top">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 0.1em;">Subtotal</span>
+                <span class="fw-bold fs-5 text-primary">₱@subtotal.ToString("N2")</span>
+            </div>
+            <p class="text-muted text-center" style="font-size: 0.7rem;">*Shipping and taxes calculated at checkout</p>
+            
+            <button type="button" class="btn btn-primary w-100 py-3 mt-2 fw-bold text-uppercase border-0 shadow-sm" style="background: #1a2f6e; letter-spacing: 0.1em;" onclick="openCheckout()">
+                Checkout
+            </button>
+        </div>
+    }
+</div>
