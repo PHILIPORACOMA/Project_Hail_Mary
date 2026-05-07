@@ -89,5 +89,60 @@ namespace Project_Hail_Mary.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
-    }
+
+		[HttpGet("profile")]
+		public IActionResult Profile()
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			if (userId == null)
+				return RedirectToAction("Login");
+
+			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
+			if (user == null)
+				return RedirectToAction("Login");
+
+			return View(user);
+		}
+
+		// POST /account/update-address
+		[HttpPost("update-address")]
+		[ValidateAntiForgeryToken]
+		public IActionResult UpdateAddress(string address)
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			if (userId == null) return RedirectToAction("Login");
+
+			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
+			if (user == null) return RedirectToAction("Login");
+
+			user.Address = address;
+			_db.SaveChanges();
+			return RedirectToAction("Profile");
+		}
+
+		// POST /account/upload-picture
+		[HttpPost("upload-picture")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UploadPicture(IFormFile profilePicture)
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			if (userId == null) return RedirectToAction("Login");
+
+			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
+			if (user == null) return RedirectToAction("Login");
+
+			if (profilePicture != null && profilePicture.Length > 0)
+			{
+				var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+				Directory.CreateDirectory(uploadsFolder);
+				var fileName = $"user_{userId}{Path.GetExtension(profilePicture.FileName)}";
+				var filePath = Path.Combine(uploadsFolder, fileName);
+				using var stream = new FileStream(filePath, FileMode.Create);
+				await profilePicture.CopyToAsync(stream);
+				user.ProfilePicture = $"/uploads/{fileName}";
+				_db.SaveChanges();
+			}
+			return RedirectToAction("Profile");
+		}
+	}
 }
