@@ -313,8 +313,14 @@
         <div class="row align-items-start">
 
             <!-- LEFT: Image card -->
+            <!-- LEFT: Image card -->
             <div class="col-12 col-md-5">
-                <div class="product-image-card">
+                <img src="/images/prod/@(productSlug).jpg" alt="@productName"
+                     id="mainProductImg"
+                     style="width:100%; border-radius:12px; object-fit:cover;"
+                     onerror="this.onerror=null; this.style.display='none'; document.getElementById('fallbackCard').style.display='flex';" />
+
+                <div class="product-image-card" id="fallbackCard" style="display:none;">
                     <span class="card-brand-overlay">bazar</span>
                     <div class="card-inspired-text">
                         Bath &amp; Body Works<br>
@@ -330,23 +336,10 @@
                         &#9679; bazar scents<br>
                         &#9679; bazar
                     </div>
-
-                    <!-- Bottle SVG (replace with <img> once you have real product images) -->
                     <div class="bottle-wrap">
-                        <svg width="130" height="200" viewBox="0 0 70 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="24" y="0" width="22" height="10" rx="2.5" fill="@bottleColor" opacity="0.8" />
-                            <rect x="27" y="9" width="16" height="16" rx="2" fill="@bottleColor" opacity="0.9" />
-                            <rect x="6" y="23" width="58" height="94" rx="9" fill="@bottleColor" />
-                            <rect x="6" y="23" width="58" height="94" rx="9" fill="url(#det_grad)" />
-                            <rect x="13" y="56" width="44" height="36" rx="3.5" fill="rgba(255,255,255,0.1)" />
-                            <text x="35" y="78" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="6" font-family="Georgia,serif" letter-spacing="0.5">@productName.ToLower()</text>
-                            <defs>
-                                <linearGradient id="det_grad" x1="6" y1="23" x2="64" y2="117" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="white" stop-opacity="0.22" />
-                                    <stop offset="100%" stop-color="black" stop-opacity="0.22" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                        <img src="/images/@(productSlug).png" alt="@productName"
+                             style="max-height:340px; max-width:100%; object-fit:contain;
+                        filter:drop-shadow(0 15px 40px rgba(0,0,0,0.6));" />
                     </div>
                 </div>
             </div>

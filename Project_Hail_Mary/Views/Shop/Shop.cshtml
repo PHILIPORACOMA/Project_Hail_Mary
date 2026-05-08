@@ -159,8 +159,8 @@
             display: flex;
             justify-content: center;
             margin-bottom: 0.9rem;
-            min-height: 110px;
-            align-items: flex-end;
+            height: 220px;
+            align-items: center;
         }
 
         .product-name-shop {
@@ -196,19 +196,19 @@
                 @{
                     var products = new[] {
                                 new { Name = "Afro",     Slug = "afro",     Category = "men"   },
-                                new { Name = "Crest",    Slug = "crest",    Category = "women" },
-                                new { Name = "Florine",  Slug = "florine",  Category = "women" },
+                                new { Name = "Cloud",    Slug = "cloud",    Category = "women" },
+                                new { Name = "Florise",  Slug = "florise",  Category = "women" },
                                 new { Name = "Quiff",    Slug = "quiff",    Category = "men"   },
                                 new { Name = "Enchantè", Slug = "enchante", Category = "women" },
-                                new { Name = "Baco",     Slug = "baco",     Category = "men"   },
+                                new { Name = "Buzz",     Slug = "buzz",     Category = "men"   },
                                 new { Name = "Antheia",  Slug = "antheia",  Category = "women" },
-                                new { Name = "Hypnos",   Slug = "hypnos",   Category = "men"   },
+                                new { Name = "Hygea",   Slug = "hygea",   Category = "women"   },
                                 new { Name = "Temple",   Slug = "temple",   Category = "men"   },
                                 new { Name = "Athena",   Slug = "athena",   Category = "women" },
-                                new { Name = "Muller",   Slug = "muller",   Category = "men"   },
+                                new { Name = "Mullet",   Slug = "mullet",   Category = "men"   },
                                 new { Name = "Slick",    Slug = "slick",    Category = "men"   },
-                                new { Name = "Aphroe",   Slug = "aphroe",   Category = "women" },
-                                new { Name = "Toper",    Slug = "toper",    Category = "men"   },
+                                new { Name = "Aphrora",   Slug = "aphrora",   Category = "women" },
+                                new { Name = "Taper",    Slug = "taper",    Category = "men"   },
                                 };
                     int idx = 0;
                     string[] shades = { "#1e3580", "#162255", "#243e8a", "#1a2f6e", "#0f2260", "#1b3878" };
@@ -226,20 +226,9 @@
                                     Replace the SVG below with a real image once available:
                                     <img src="~/images/products/@(p.Slug).png" alt="@p.Name" style="max-height:110px;object-fit:contain;" />
                                 *@
-                                <svg width="70" height="110" viewBox="0 0 70 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="24" y="0" width="22" height="10" rx="2.5" fill="@(color)" opacity="0.7" />
-                                    <rect x="27" y="9" width="16" height="16" rx="2" fill="@(color)" opacity="0.85" />
-                                    <rect x="6" y="23" width="58" height="84" rx="8" fill="@(color)" />
-                                    <rect x="6" y="23" width="58" height="84" rx="8" fill="url(#sp_@(p.Slug))" />
-                                    <rect x="13" y="52" width="44" height="32" rx="3.5" fill="rgba(255,255,255,0.1)" />
-                                    <text x="35" y="71" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="5.5" font-family="Georgia,serif" letter-spacing="0.5">@p.Name.ToLower()</text>
-                                    <defs>
-                                        <linearGradient id="sp_@(p.Slug)" x1="6" y1="23" x2="64" y2="107" gradientUnits="userSpaceOnUse">
-                                            <stop offset="0%" stop-color="white" stop-opacity="0.18" />
-                                            <stop offset="100%" stop-color="black" stop-opacity="0.2" />
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
+                                <img src="/images/@(p.Slug).png" alt="@p.Name"
+                                     style="max-height:220px; max-width:100%; object-fit:contain;"
+                                     onerror="this.style.opacity='0'" />
                             </div>
                             <p class="product-name-shop">@p.Name</p>
                         </a>

@@ -72,21 +72,15 @@
 
         /* HERO */
         .hero-section {
-            position: relative;
-            min-height: 520px;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            background: linear-gradient(120deg, #0b1838 0%, #162255 40%, #1c3070 100%);
-        }
+    position: relative;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(120deg, #0b1838 0%, #162255 40%, #1c3070 100%);
+}
 
-            .hero-section::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(30,60,140,0.55) 0%, transparent 70%), radial-gradient(ellipse 60% 80% at 20% 30%, rgba(10,20,70,0.7) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 85% 10%, rgba(40,80,180,0.4) 0%, transparent 60%);
-                pointer-events: none;
-            }
+          
 
         .hero-silk {
             position: absolute;
@@ -355,38 +349,10 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="hero-products">
-                        <div class="bottle-group">
-                            <svg class="bottle-svg-hero" width="90" height="160" viewBox="0 0 90 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="33" y="0" width="24" height="14" rx="3" fill="#0d1b3e" opacity="0.9" />
-                                <rect x="37" y="13" width="16" height="22" rx="2" fill="#1a2f6e" opacity="0.8" />
-                                <rect x="14" y="33" width="62" height="110" rx="8" fill="#1e3580" />
-                                <rect x="14" y="33" width="62" height="110" rx="8" fill="url(#sh1)" />
-                                <rect x="22" y="70" width="46" height="40" rx="4" fill="rgba(255,255,255,0.12)" />
-                                <text x="45" y="94" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7" font-family="Georgia,serif" letter-spacing="1">muller</text>
-                                <defs>
-                                    <linearGradient id="sh1" x1="14" y1="33" x2="76" y2="143" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="white" stop-opacity="0.15" />
-                                        <stop offset="40%" stop-color="white" stop-opacity="0.04" />
-                                        <stop offset="100%" stop-color="black" stop-opacity="0.2" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <svg class="bottle-svg-hero" width="100" height="185" viewBox="0 0 100 185" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="36" y="0" width="28" height="16" rx="4" fill="#0a1228" />
-                                <rect x="40" y="15" width="20" height="26" rx="2" fill="#162250" />
-                                <rect x="12" y="39" width="76" height="130" rx="10" fill="#1e3580" />
-                                <rect x="12" y="39" width="76" height="130" rx="10" fill="url(#sh2)" />
-                                <rect x="22" y="82" width="56" height="48" rx="5" fill="rgba(255,255,255,0.12)" />
-                                <text x="50" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="Georgia,serif" letter-spacing="1">antheia</text>
-                                <defs>
-                                    <linearGradient id="sh2" x1="12" y1="39" x2="88" y2="169" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="white" stop-opacity="0.18" />
-                                        <stop offset="35%" stop-color="white" stop-opacity="0.04" />
-                                        <stop offset="100%" stop-color="black" stop-opacity="0.25" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
+                        <img src="/images/featured.png" alt="Featured Collection"
+                             style="width:100%; max-height:580px; object-fit:contain;
+                    filter:drop-shadow(0 20px 60px rgba(0,0,0,0.7));
+                    margin-bottom:-62px;" />
                     </div>
                 </div>
             </div>
@@ -399,18 +365,9 @@
             <div class="row align-items-center g-5">
                 <div class="col-md-5">
                     <!-- Replace this div with <img src="~/images/about-collection.jpg" ... /> when ready -->
-                    <div class="about-img-placeholder">
-                        @for (int i = 0; i < 9; i++)
-                        {
-                            <div class="mini-bottle">
-                                <svg width="28" height="48" viewBox="0 0 28 48" fill="none">
-                                    <rect x="9" y="0" width="10" height="6" rx="1.5" fill="rgba(255,255,255,0.25)" />
-                                    <rect x="11" y="5" width="6" height="8" rx="1" fill="rgba(255,255,255,0.18)" />
-                                    <rect x="4" y="12" width="20" height="34" rx="3" fill="rgba(255,255,255,0.12)" />
-                                </svg>
-                            </div>
-                        }
-                    </div>
+                    <img src="/images/flat.jpg" alt="Silk"
+                         style="width:100%; max-width:420px; border-radius:4px;
+            object-fit:cover; aspect-ratio:1/1;" />
                 </div>
                 <div class="col-md-7">
                     <div class="about-text-wrap">
