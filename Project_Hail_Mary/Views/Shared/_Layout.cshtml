@@ -365,7 +365,7 @@
                         cartCount = db?.Cart.Where(c => c.UserId == navUserId.Value).Sum(c => c.Quantity) ?? 0;
                     }
                 }
-                <li><a href="javascript:void(0)" onclick="openCartModal()">Cart (<span id="cart-count">@cartCount</span>)</a></li>
+                <li><a href="javascript:void(0)" onclick="openSearch()">Search</a></li>
             </ul>
         </nav>
     </header>
@@ -393,6 +393,70 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
+
+                const allProducts = [
+            { name: "Afro",     slug: "afro",     category: "men"   },
+            { name: "Cloud",    slug: "cloud",    category: "women" },
+            { name: "Florise",  slug: "florise",  category: "women" },
+            { name: "Quiff",    slug: "quiff",    category: "men"   },
+            { name: "Enchantè", slug: "enchante", category: "women" },
+            { name: "Antheia",  slug: "antheia",  category: "women" },
+            { name: "Hygea",    slug: "hygea",    category: "women" },
+            { name: "Temple",   slug: "temple",   category: "men"   },
+            { name: "Athena",   slug: "athena",   category: "women" },
+            { name: "Mullet",   slug: "mullet",   category: "men"   },
+            { name: "Slick",    slug: "slick",    category: "men"   },
+            { name: "Aphrora",  slug: "aphrora",  category: "women" },
+            { name: "Taper",    slug: "taper",    category: "men"   },
+            { name: "Buzz",     slug: "buzz",     category: "men"   },
+        ];
+
+        function openSearch() {
+            const overlay = document.getElementById('searchOverlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => document.getElementById('searchInput').focus(), 100);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSearch() {
+            document.getElementById('searchOverlay').style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').innerHTML = '';
+            document.body.style.overflow = '';
+        }
+
+        function runSearch(query) {
+            const results = document.getElementById('searchResults');
+            if (!query.trim()) { results.innerHTML = ''; return; }
+
+            const matches = allProducts.filter(p =>
+                p.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (matches.length === 0) {
+                results.innerHTML = '<p style="color:rgba(255,255,255,0.4); font-size:0.9rem;">No products found.</p>';
+                return;
+            }
+
+            results.innerHTML = matches.map(p => `
+                <a href="/Shop/ProductDetail?slug=${p.slug}&name=${encodeURIComponent(p.name)}&category=${p.category}"
+                   onclick="closeSearch()"
+                   style="display:flex; align-items:center; gap:1rem; padding:0.8rem 0;
+                          border-bottom:1px solid rgba(255,255,255,0.08); text-decoration:none;">
+                    <img src="/images/${p.slug}.png" alt="${p.name}"
+                         style="width:40px; height:50px; object-fit:contain;"
+                         onerror="this.style.opacity='0'" />
+                    <div>
+                        <div style="color:#fff; font-size:0.9rem; font-weight:500;">${p.name}</div>
+                        <div style="color:rgba(255,255,255,0.4); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em;">${p.category}</div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
+
         function toggleDropdown(e) {
             e.stopPropagation();
             document.getElementById('profileDropdown')?.classList.toggle('open');
@@ -509,5 +573,25 @@
                 });
         }
     </script>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" style="display:none; position:fixed; inset:0; background:rgba(5,10,30,0.92); z-index:9999; align-items:flex-start; justify-content:center; padding-top:8rem;">
+        <div style="width:100%; max-width:600px; padding:0 1.5rem;">
+            <div style="position:relative;">
+                <input type="text" id="searchInput" placeholder="Search products..."
+                       oninput="runSearch(this.value)"
+                       style="width:100%; background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.4);
+                          color:#fff; font-size:2rem; padding:0.5rem 0; outline:none; font-family:'DM Sans',sans-serif;
+                          letter-spacing:0.04em;" />
+                <button onclick="closeSearch()"
+                        style="position:absolute; right:0; top:50%; transform:translateY(-50%);
+                           background:none; border:none; color:rgba(255,255,255,0.5); font-size:1.5rem; cursor:pointer;">
+                    ✕
+                </button>
+            </div>
+            <div id="searchResults" style="margin-top:2rem;"></div>
+        </div>
+    </div>
+
 </body>
 </html>
