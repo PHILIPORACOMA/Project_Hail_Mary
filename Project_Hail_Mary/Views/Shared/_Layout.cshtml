@@ -316,7 +316,7 @@
                 <span class="brand-sub">Bizarre</span>
             </div>
             <ul class="nav-links">
-                <li><a href="#">Search</a></li>
+                <li><a href="javascript:void(0)" onclick="openSearch()">Search</a></li>
                 @{
                     var sessionFirstName = Context.Session.GetString("UserFirstName");
                     var sessionLastName = Context.Session.GetString("UserLastName");
