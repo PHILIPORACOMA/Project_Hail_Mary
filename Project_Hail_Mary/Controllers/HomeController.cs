@@ -2,11 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Project_Hail_Mary.Controllers
 {
-    [Route("home")]
     public class HomeController : Controller
     {
-        [HttpGet("")]
-        [HttpGet("index")]
         public IActionResult Index()
         {
             return View();
