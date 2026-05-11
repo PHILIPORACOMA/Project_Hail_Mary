@@ -49,7 +49,7 @@
 
             .nav-links a, .nav-icon-link {
                 color: rgba(255,255,255,0.85);
-                font-size: 0.68rem;
+                font-size: clamp(0.6rem, 0.5vw + 0.5rem, 0.8rem);
                 letter-spacing: 0.14em;
                 text-transform: uppercase;
                 font-weight: 500;
@@ -76,68 +76,66 @@
         }
 
         .profile-trigger {
+            color: rgba(255,255,255,0.85);
+            font-size: clamp(0.6rem, 0.5vw + 0.5rem, 0.8rem);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 6px 12px;
+            text-decoration: none;
+            transition: color 0.2s;
+            background: none;
+            border: none;
             display: flex;
             align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            padding: 5px 14px;
-            border-radius: 30px;
-            transition: all 0.2s;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #fff;
+            gap: 6px;
             position: relative;
             z-index: 8;
+            cursor: pointer;
         }
 
             .profile-trigger:hover {
-                background: rgba(255,255,255,0.15);
-                border-color: rgba(255,255,255,0.3);
+                color: #fff;
             }
 
         .profile-avatar {
-            width: 26px;
-            height: 26px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: linear-gradient(135deg, #4a6fa5, #1e3060);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.6rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #fff;
             letter-spacing: 0.05em;
             flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .profile-name {
-            font-size: 0.68rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 600;
-            color: #fff;
+            border: 2px solid rgba(255,255,255,0.25);
+            margin: 0 auto 15px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
         }
 
         .profile-caret {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.55rem;
-            transition: transform 0.2s;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.5rem;
+            transition: transform 0.3s ease;
         }
 
         .dropdown-menu-custom {
             display: none;
             position: absolute;
             right: 0;
-            top: calc(100% + 12px);
+            top: calc(100% + 15px);
             background: #0d1b3e;
-            border-radius: 12px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 220px;
-            padding: 8px 0;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            min-width: clamp(240px, 18vw, 300px);
+            padding: 12px 0;
             z-index: 1000;
-            animation: dropIn 0.18s ease;
+            animation: dropIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .profile-dropdown.open .dropdown-menu-custom {
@@ -149,51 +147,61 @@
         }
 
         .dropdown-header {
-            padding: 12px 18px 8px;
+            padding: 24px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
             .dropdown-header strong {
                 display: block;
-                font-size: 0.85rem;
+                font-size: clamp(1rem, 1.2vw, 1.2rem);
                 color: #fff;
-                font-weight: 600;
+                font-weight: 700;
+                margin-bottom: 4px;
             }
 
             .dropdown-header span {
-                font-size: 0.73rem;
-                color: rgba(255, 255, 255, 0.65);
+                font-size: clamp(0.8rem, 1vw, 0.9rem);
+                color: rgba(255, 255, 255, 0.55);
+                display: block;
+                word-break: break-all;
             }
 
         .dropdown-item-custom {
             display: block;
-            padding: 9px 18px;
-            font-size: 0.78rem;
+            padding: 12px 24px;
+            font-size: clamp(0.8rem, 1vw, 0.95rem);
             color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            letter-spacing: 0.04em;
-            transition: background 0.15s;
+            letter-spacing: 0.06em;
+            transition: all 0.2s;
+            font-weight: 500;
         }
 
             .dropdown-item-custom:hover {
                 background: rgba(255, 255, 255, 0.08);
                 color: #fff;
+                padding-left: 28px;
             }
 
         .dropdown-divider-custom {
             height: 1px;
             background: rgba(255, 255, 255, 0.1);
-            margin: 4px 0;
+            margin: 8px 0;
         }
 
         .dropdown-item-custom.logout-item {
-            color: #ff9090;
+            color: #ff8080;
+            font-weight: 600;
         }
 
             .dropdown-item-custom.logout-item:hover {
-                background: rgba(255, 80, 80, 0.15);
-                color: #ffbaba;
+                background: rgba(255, 60, 60, 0.15);
+                color: #ffabab;
             }
 
         @@keyframes dropIn {
@@ -246,7 +254,7 @@
         .brand-name {
             font-family: 'Playfair Display', serif;
             color: #fff;
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 3vw, 2.2rem);
             letter-spacing: 0.08em;
             display: block;
             text-decoration: none;
@@ -256,7 +264,7 @@
 
         .brand-sub {
             display: block;
-            font-size: 0.52rem;
+            font-size: clamp(0.4rem, 1vw, 0.6rem);
             letter-spacing: 0.38em;
             color: rgba(255,255,255,0.6);
             text-transform: uppercase;
@@ -342,7 +350,7 @@
             border: none;
             border-radius: 30px;
             padding: 0.78rem 1.3rem;
-            font-size: 0.87rem;
+            font-size: clamp(0.8rem, 0.5vw + 0.6rem, 1rem);
             width: 100%;
         }
 
@@ -362,7 +370,7 @@
             border: none;
             border-radius: 30px;
             padding: 0.72rem 3rem;
-            font-size: 0.75rem;
+            font-size: clamp(0.7rem, 0.5vw + 0.5rem, 0.9rem);
             letter-spacing: 0.12em;
             text-transform: uppercase;
             font-weight: 600;
@@ -380,8 +388,8 @@
         }
 
         .left-panel {
-            flex: 0 0 42%;
-            padding: 2.5rem;
+            flex: 0 0 clamp(30%, 42%, 50%);
+            padding: clamp(1rem, 5vw, 2.5rem);
             display: flex;
             align-items: stretch;
             max-height: 100vh;
@@ -390,7 +398,7 @@
 
         .right-panel {
             flex: 1;
-            padding: 3rem 3rem 3rem 4rem;
+            padding: clamp(1.5rem, 8vw, 4rem);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -398,12 +406,12 @@
 
         .form-card {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             margin: auto;
         }
 
         .form-title {
-            font-size: 2.7rem;
+            font-size: clamp(1.8rem, 6vw, 3rem);
             font-weight: 700;
             color: #111;
             margin-bottom: 1.8rem;
@@ -463,19 +471,19 @@
                     {
                         <li class="profile-dropdown" id="profileDropdown">
                             <button class="profile-trigger" onclick="toggleDropdown(event)">
-                                @if (!string.IsNullOrEmpty(sessionProfilePic))
-                                {
-                                    <img src="@sessionProfilePic" alt="Profile" class="profile-avatar" style="object-fit:cover;" />
-                                }
-                                else
-                                {
-                                    <span class="profile-avatar">@initials</span>
-                                }
-                                <span class="profile-name">@sessionFirstName</span>
+                                <span>Account</span>
                                 <span class="profile-caret">&#9660;</span>
                             </button>
                             <div class="dropdown-menu-custom">
                                 <div class="dropdown-header">
+                                    @if (!string.IsNullOrEmpty(sessionProfilePic))
+                                    {
+                                        <img src="@sessionProfilePic" alt="Profile" class="profile-avatar" style="object-fit:cover;" />
+                                    }
+                                    else
+                                    {
+                                        <span class="profile-avatar">@initials</span>
+                                    }
                                     <strong>@fullName</strong>
                                     <span>@sessionEmail</span>
                                 </div>

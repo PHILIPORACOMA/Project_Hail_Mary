@@ -73,7 +73,7 @@
         /* HERO */
         .hero-section {
     position: relative;
-    min-height: 520px;
+    min-height: clamp(400px, 60vh, 700px);
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -92,16 +92,16 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            padding: 4rem 0;
+            padding: clamp(2rem, 5vw, 4rem) 0;
         }
 
             .hero-content h1 {
                 font-family: 'DM Sans', sans-serif;
                 font-weight:900;
-                font-size: 4.9rem;
+                font-size: clamp(3.5rem, 10vw, 6.5rem);
                 font-weight: 700;
                 color: #fff;
-                line-height: 1.18;
+                line-height: 1.1;
                 margin-bottom: 2.2rem;
                 text-transform: uppercase;
                 letter-spacing: 0.02em;
@@ -112,8 +112,8 @@
             color: #fff;
             border: 1.5px solid rgba(255,255,255,0.7);
             border-radius: 50px;
-            padding: 0.75rem 1.8rem;
-            font-size: 0.68rem;
+            padding: 1rem 2.5rem;
+            font-size: clamp(0.75rem, 1.2vw, 0.9rem);
             letter-spacing: 0.18em;
             text-transform: uppercase;
             font-weight: 600;
@@ -149,7 +149,7 @@
 
         /* ABOUT */
         .about-section {
-            padding: 5rem 0;
+            padding: clamp(3rem, 8vw, 8rem) 0;
             background: #fff;
         }
 
@@ -175,50 +175,50 @@
         }
 
         .about-text-wrap {
-            padding-left: 3rem;
+            padding-left: clamp(1rem, 4vw, 3rem);
         }
 
             .about-text-wrap h2 {
                 font-family: 'DM Sans', sans-serif;
-                font-size: 2.2rem;
+                font-size: clamp(2.5rem, 6vw, 4rem);
                 font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.03em;
                 color: #111;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
             }
 
         .about-tagline {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 0.95rem;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
             color: #555;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
             line-height: 1.5;
         }
 
         .about-body {
-            font-size: 0.85rem;
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
             color: #555;
-            line-height: 1.75;
-            margin-bottom: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
         }
 
         /* COLLECTION */
         .collection-section {
-            padding: 3.5rem 0 5rem;
+            padding: 4rem 0 7rem;
         }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
             .section-header h2 {
                 font-family: 'DM Sans', sans-serif;
-                font-size: 1.65rem;
+                font-size: clamp(2rem, 4vw, 3rem);
                 font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.04em;
@@ -230,8 +230,8 @@
             background: transparent;
             border: 1px solid #ccc;
             border-radius: 50px;
-            padding: 0.45rem 1.3rem;
-            font-size: 0.68rem;
+            padding: 0.6rem 1.8rem;
+            font-size: clamp(0.75rem, 1.2vw, 0.9rem);
             letter-spacing: 0.14em;
             text-transform: uppercase;
             color: #555;
@@ -247,7 +247,7 @@
         .product-card {
             background: #f9f9f9;
             border-radius: 8px;
-            padding: 2rem 1.5rem 1.5rem;
+            padding: 2.5rem 1.5rem 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -263,15 +263,15 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .product-name {
-            font-size: 0.82rem;
+            font-size: clamp(1rem, 1.3vw, 1.2rem);
             font-weight: 500;
             color: #222;
             letter-spacing: 0.06em;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             text-align: center;
         }
 
@@ -280,8 +280,8 @@
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 0.6rem 1.8rem;
-            font-size: 0.68rem;
+            padding: 0.8rem 2.2rem;
+            font-size: clamp(0.75rem, 1.2vw, 0.9rem);
             letter-spacing: 0.18em;
             text-transform: uppercase;
             font-weight: 600;
@@ -298,24 +298,24 @@
         /* FOOTER */
         .site-footer {
             background: linear-gradient(135deg, #162255 0%, #0d1b3e 100%);
-            padding: 3.5rem 2rem;
+            padding: 5rem 2rem;
             text-align: center;
         }
 
         .footer-brand {
             font-family: 'Playfair Display', serif;
             color: #fff;
-            font-size: 2.8rem;
+            font-size: clamp(3rem, 10vw, 5rem);
             letter-spacing: 0.04em;
             line-height: 1;
         }
 
         .footer-sub {
-            font-size: 0.6rem;
+            font-size: clamp(0.7rem, 1.5vw, 1rem);
             letter-spacing: 0.4em;
             color: #8a9ab8;
             text-transform: uppercase;
-            margin-top: 6px;
+            margin-top: 10px;
         }
 
         @@media (max-width: 768px) {
@@ -340,18 +340,18 @@
     <!-- HERO -->
     <section class="hero-section">
         <div class="hero-silk"></div>
-        <div class="container">
+        <div class="container-fluid" style="padding: 0 clamp(2rem, 5vw, 6rem);">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="hero-content">
                         <h1>Skip the<br />ordinary.<br />Wear the<br />unexpected.</h1>
-                        <a asp-controller="Shop" asp-action="Index" class="btn-shop-outline">Shop the collection</a>
+                        <a asp-controller="Shop" asp-action="Shop" class="btn-shop-outline">Shop the collection</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="hero-products">
                         <img src="/images/featured.png" alt="Featured Collection"
-                             style="width:100%; max-height:580px; object-fit:contain;
+                             style="width:100%; max-height:clamp(400px, 60vh, 700px); object-fit:contain;
                     filter:drop-shadow(0 20px 60px rgba(0,0,0,0.7));
                     margin-bottom:-62px;" />
                     </div>
@@ -362,12 +362,12 @@
 
     <!-- THE MAGIC OF BIZARRE -->
     <section class="about-section">
-        <div class="container">
+        <div class="container-fluid" style="padding: 0 clamp(2rem, 5vw, 6rem);">
             <div class="row align-items-center g-5">
                 <div class="col-md-5">
                     <!-- Replace this div with <img src="~/images/about-collection.jpg" ... /> when ready -->
                     <img src="/images/flat.jpg" alt="Silk"
-                         style="width:100%; max-width:420px; border-radius:4px;
+                         style="width:100%; max-width:600px; border-radius:4px;
             object-fit:cover; aspect-ratio:1/1;" />
                 </div>
                 <div class="col-md-7">
@@ -385,12 +385,12 @@
 
     <!-- OUR COLLECTION -->
     <section class="collection-section">
-        <div class="container">
+        <div class="container-fluid" style="padding: 0 clamp(2rem, 5vw, 6rem);">
             <div class="section-header">
                 <h2>Our Collection</h2>
                 <a asp-controller="Shop" asp-action="Index" class="btn-see-all">See All</a>
             </div>
-            <div class="row g-3">
+            <div class="row g-4">
                 @{
                     var featured = new[] {
                                 new { Name = "Enchantè", Slug = "enchante" },
@@ -405,7 +405,7 @@
                         <div class="product-card">
                             <div class="product-img-wrap">
                                 <img src="/images/@(p.Slug).png" alt="@p.Name"
-                                     style="height:150px; object-fit:contain;" />
+                                     style="height:clamp(150px, 20vh, 250px); object-fit:contain;" />
                             </div>
                             <p class="product-name">@p.Name</p>
                             <a href="#" class="btn-buy">Buy Now</a>
