@@ -3,22 +3,22 @@
     ViewData["Title"] = "My Profile";
 }
 
-<div style="display:flex; min-height:calc(100vh - 78px); max-width:860px; margin:0 auto; padding:2rem 1.5rem; gap:2rem;">
+<div style="display:flex; min-height:calc(100vh - 78px); max-width:clamp(800px, 95vw, 1400px); margin:0 auto; padding:clamp(1rem, 5vw, 2.5rem) 1.5rem; gap:clamp(1rem, 3vw, 2.5rem); flex-wrap: wrap;">
 
     <!-- Left nav -->
-    <aside style="width:150px; flex-shrink:0; padding-top:0.5rem;">
-        <a href="#" style="display:block; font-size:0.78rem; color:#111; text-decoration:none; padding:6px 0; border-bottom:1px solid #111; margin-bottom:8px; font-weight:500;">Account Overview</a>
-        <a asp-controller="Account" asp-action="Orders" style="display:block; font-size:0.78rem; color:#555; text-decoration:none; padding:6px 0;">Orders</a>
+    <aside style="width:clamp(150px, 18vw, 220px); flex-shrink:0; padding-top:0.5rem;">
+        <a href="#" style="display:block; font-size:clamp(0.75rem, 1.1vw, 0.9rem); color:#111; text-decoration:none; padding:6px 0; border-bottom:1px solid #111; margin-bottom:8px; font-weight:500;">Account Overview</a>
+        <a asp-controller="Account" asp-action="Orders" style="display:block; font-size:clamp(0.75rem, 1.1vw, 0.9rem); color:#555; text-decoration:none; padding:6px 0;">Orders</a>
     </aside>
 
-    <!-- Divider -->
-    <div style="width:1px; background:#e0e0e0; flex-shrink:0;"></div>
+    <!-- Divider (Hidden on small screens via flex-wrap) -->
+    <div style="width:1px; background:#e0e0e0; flex-shrink:0; align-self: stretch;"></div>
 
     <!-- Main content -->
-    <main style="flex:1;">
+    <main style="flex:1; min-width: 300px;">
 
         <!-- Avatar + greeting -->
-        <div style="display:flex; align-items:center; gap:2.5rem; margin-bottom:2rem;">
+        <div style="display:flex; align-items:center; gap:clamp(1.5rem, 4vw, 3rem); margin-bottom:2rem; flex-wrap: wrap;">
             <div style="text-align:center;">
                 <!-- Profile picture upload form -->
                 <form asp-controller="Account" asp-action="UploadPicture" method="post"
@@ -28,11 +28,11 @@
                         @if (!string.IsNullOrEmpty(Model.ProfilePicture))
                         {
                             <img src="@Model.ProfilePicture" alt="Profile"
-                                 style="width:96px; height:96px; border-radius:50%; object-fit:cover; border:2px solid #111;" />
+                                 style="width:clamp(80px, 12vw, 120px); height:clamp(80px, 12vw, 120px); border-radius:50%; object-fit:cover; border:2px solid #111;" />
                         }
                         else
                         {
-                            <svg width="96" height="96" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="clamp(80, 12vw, 120)" height="clamp(80, 12vw, 120)" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="36" cy="36" r="35" stroke="#111" stroke-width="2" fill="none" />
                                 <circle cx="36" cy="28" r="11" stroke="#111" stroke-width="2" fill="none" />
                                 <path d="M10 62c0-14.36 11.64-26 26-26s26 11.64 26 26" stroke="#111" stroke-width="2" fill="none" stroke-linecap="round" />
@@ -42,32 +42,73 @@
                     <input id="picInput" type="file" name="profilePicture" accept="image/*"
                            style="display:none;" onchange="this.form.submit()" />
                 </form>
-                <span style="display:block; font-size:0.7rem; color:#111; margin-top:8px;
+                <span style="display:block; font-size:0.75rem; color:#111; margin-top:8px;
                              font-weight:700; text-decoration:underline; text-underline-offset:3px; cursor:pointer; text-transform:uppercase; letter-spacing:0.02em;"
                       onclick="document.getElementById('picInput').click()">
                     Edit Profile Picture
                 </span>
             </div>
-            <h1 style="font-size:2.4rem; font-weight:700; margin:0; color:#111; font-family:'DM Sans', sans-serif;">Hi, @Model.FirstName!</h1>
+            <h1 style="font-size:clamp(2.2rem, 6vw, 3.5rem); font-weight:700; margin:0; color:#111; font-family:'DM Sans', sans-serif;">Hi, @Model.FirstName!</h1>
         </div>
 
         <hr style="border:none; border-top:1px solid #e0e0e0; margin:0 0 2rem;" />
 
         <!-- Your Info -->
-        <p style="font-size:0.85rem; font-weight:700; color:#111; margin:0 0 1.2rem; text-transform:uppercase; letter-spacing:0.05em;">Your Info</p>
-        <div style="margin-bottom:1.2rem;">
-            <p style="font-size:0.75rem; font-weight:700; color:#111; margin:0 0 4px; text-transform:uppercase; letter-spacing:0.02em;">Name</p>
-            <p style="font-size:0.88rem; color:#111; margin:0; padding-left:12px;">@Model.FirstName @Model.LastName</p>
-        </div>
-        <div style="margin-bottom:2.2rem;">
-            <p style="font-size:0.75rem; font-weight:700; color:#111; margin:0 0 4px; text-transform:uppercase; letter-spacing:0.02em;">Email</p>
-            <p style="font-size:0.88rem; color:#111; margin:0; padding-left:12px;">@Model.Email</p>
-        </div>
+        <p style="font-size:clamp(0.8rem, 1.4vw, 1rem); font-weight:700; color:#111; margin:0 0 1.2rem; text-transform:uppercase; letter-spacing:0.05em;">Your Info</p>
+        
+        @if (ViewBag.EditingInfo == true)
+        {
+            <form asp-controller="Account" asp-action="UpdateInfo" method="post" style="margin:0 0 1.5rem;">
+                @Html.AntiForgeryToken()
+                <div style="margin-bottom:1.5rem;">
+                    <p style="font-size:0.8rem; font-weight:700; color:#111; margin:0 0 8px; text-transform:uppercase; letter-spacing:0.02em;">First Name</p>
+                    <input type="text" name="firstName" value="@Model.FirstName"
+                           style="padding:12px 20px; border:1.5px solid #111; border-radius:30px; font-size:0.95rem; width:100%; max-width:500px;" required />
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <p style="font-size:0.8rem; font-weight:700; color:#111; margin:0 0 8px; text-transform:uppercase; letter-spacing:0.02em;">Last Name</p>
+                    <input type="text" name="lastName" value="@Model.LastName"
+                           style="padding:12px 20px; border:1.5px solid #111; border-radius:30px; font-size:0.95rem; width:100%; max-width:500px;" required />
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <p style="font-size:0.8rem; font-weight:700; color:#111; margin:0 0 8px; text-transform:uppercase; letter-spacing:0.02em;">Email</p>
+                    <input type="email" name="email" value="@Model.Email"
+                           style="padding:12px 20px; border:1.5px solid #111; border-radius:30px; font-size:0.95rem; width:100%; max-width:500px;" required />
+                </div>
+                <button type="submit"
+                        style="padding:12px 40px; background:#0d1b3e; color:#fff; border:none;
+                                   border-radius:30px; font-size:0.8rem; letter-spacing:0.12em;
+                                   text-transform:uppercase; font-weight:700; cursor:pointer;
+                                   font-family:'DM Sans',sans-serif; margin-right:12px;">
+                    Save
+                </button>
+                <a asp-controller="Account" asp-action="Profile"
+                   style="font-size:0.85rem; color:#888; text-decoration:underline;">Cancel</a>
+            </form>
+        }
+        else
+        {
+            <div style="margin-bottom:1.5rem;">
+                <p style="font-size:0.8rem; font-weight:700; color:#111; margin:0 0 6px; text-transform:uppercase; letter-spacing:0.02em;">Name</p>
+                <p style="font-size:1rem; color:#111; margin:0; padding-left:12px;">@Model.FirstName @Model.LastName</p>
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <p style="font-size:0.8rem; font-weight:700; color:#111; margin:0 0 6px; text-transform:uppercase; letter-spacing:0.02em;">Email</p>
+                <p style="font-size:1rem; color:#111; margin:0; padding-left:12px;">@Model.Email</p>
+            </div>
+            <a asp-controller="Account" asp-action="Profile" asp-route-edit="info"
+               style="display:inline-block; margin-bottom:1.5rem; padding:12px 32px; background:none;
+                          border:1.5px solid #111; border-radius:30px; font-size:0.75rem;
+                          letter-spacing:0.12em; text-transform:uppercase; font-weight:700;
+                          cursor:pointer; font-family:'DM Sans',sans-serif; text-decoration:none; color:#111;">
+                Edit Info
+            </a>
+        }
 
         <hr style="border:none; border-top:1px solid #e0e0e0; margin:0 0 2rem;" />
 
         <!-- Default Address -->
-        <p style="font-size:0.85rem; font-weight:700; color:#111; margin:0 0 1.2rem; text-transform:uppercase; letter-spacing:0.05em;">Default Address</p>
+        <p style="font-size:clamp(0.8rem, 1.4vw, 1rem); font-weight:700; color:#111; margin:0 0 1.2rem; text-transform:uppercase; letter-spacing:0.05em;">Default Address</p>
 
         @if (ViewBag.EditingAddress == true)
         {
@@ -75,49 +116,35 @@
                 @Html.AntiForgeryToken()
                 <input type="text" name="address" value="@Model.Address"
                        placeholder="Enter your address"
-                       style="padding:10px 18px; border:1.5px solid #111; border-radius:30px;
-                                  font-size:0.88rem; width:100%; max-width:400px;
-                                  font-family:'DM Sans',sans-serif; margin-bottom:12px;" />
+                       style="padding:12px 20px; border:1.5px solid #111; border-radius:30px;
+                                  font-size:0.95rem; width:100%; max-width:500px;
+                                  font-family:'DM Sans',sans-serif; margin-bottom:15px;" />
                 <br />
                 <button type="submit"
-                        style="padding:11px 32px; background:#0d1b3e; color:#fff; border:none;
-                                   border-radius:30px; font-size:0.72rem; letter-spacing:0.12em;
+                        style="padding:12px 40px; background:#0d1b3e; color:#fff; border:none;
+                                   border-radius:30px; font-size:0.8rem; letter-spacing:0.12em;
                                    text-transform:uppercase; font-weight:700; cursor:pointer;
                                    font-family:'DM Sans',sans-serif; margin-right:12px;">
                     Save
                 </button>
                 <a asp-controller="Account" asp-action="Profile"
-                   style="font-size:0.75rem; color:#888; text-decoration:underline;">Cancel</a>
+                   style="font-size:0.85rem; color:#888; text-decoration:underline;">Cancel</a>
             </form>
         }
         else
         {
-            <p style="font-size:0.88rem; color:#111; margin:0 0 1.5rem; padding-left:12px;">
+            <p style="font-size:1rem; color:#111; margin:0 0 1.5rem; padding-left:12px;">
                 @(string.IsNullOrEmpty(Model.Address) ? "No address set" : Model.Address)
             </p>
             <br />
             <a asp-controller="Account" asp-action="Profile" asp-route-edit="address"
-               style="display:inline-block; margin-top:8px; padding:12px 36px; background:none;
-                          border:1.5px solid #111; border-radius:30px; font-size:0.7rem;
+               style="display:inline-block; margin-top:8px; padding:14px 44px; background:none;
+                          border:1.5px solid #111; border-radius:30px; font-size:0.75rem;
                           letter-spacing:0.12em; text-transform:uppercase; font-weight:700;
                           cursor:pointer; font-family:'DM Sans',sans-serif; text-decoration:none; color:#111;">
                 Change Default Address
             </a>
         }
-
-        <hr style="border:none; border-top:1px solid #e0e0e0; margin:2rem 0;" />
-
-        <!-- Logout -->
-        <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
-            @Html.AntiForgeryToken()
-            <button type="submit"
-                    style="padding:10px 32px; background:none; border:1.5px solid #111;
-                           border-radius:30px; font-size:0.68rem; letter-spacing:0.12em;
-                           text-transform:uppercase; font-weight:600; cursor:pointer;
-                           font-family:'DM Sans',sans-serif;">
-                Logout
-            </button>
-        </form>
 
     </main>
 </div>

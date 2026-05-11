@@ -123,8 +123,36 @@ namespace Project_Hail_Mary.Controllers
 			{
 				ViewBag.EditingAddress = true;
 			}
+			else if (edit == "info")
+			{
+				ViewBag.EditingInfo = true;
+			}
 
 			return View(user);
+		}
+
+		// POST /account/update-info
+		[HttpPost("update-info")]
+		[ValidateAntiForgeryToken]
+		public IActionResult UpdateInfo(string firstName, string lastName, string email)
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			if (userId == null) return RedirectToAction("Login");
+
+			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
+			if (user == null) return RedirectToAction("Login");
+
+			user.FirstName = firstName;
+			user.LastName = lastName;
+			user.Email = email;
+			_db.SaveChanges();
+
+			// Update session
+			HttpContext.Session.SetString("UserEmail", user.Email);
+			HttpContext.Session.SetString("UserFirstName", user.FirstName);
+			HttpContext.Session.SetString("UserLastName", user.LastName);
+
+			return RedirectToAction("Profile");
 		}
 
 		// POST /account/update-address
