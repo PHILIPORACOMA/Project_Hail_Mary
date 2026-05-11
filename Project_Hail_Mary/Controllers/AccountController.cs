@@ -55,6 +55,7 @@ namespace Project_Hail_Mary.Controllers
             HttpContext.Session.SetString("UserEmail", user.Email);
             HttpContext.Session.SetString("UserFirstName", user.FirstName);
             HttpContext.Session.SetString("UserLastName", user.LastName);
+            HttpContext.Session.SetString("UserProfilePicture", user.ProfilePicture ?? "");
 
             return RedirectToAction("Index", "Home");
         }
@@ -163,6 +164,7 @@ namespace Project_Hail_Mary.Controllers
 				await profilePicture.CopyToAsync(stream);
 				user.ProfilePicture = $"/uploads/{fileName}";
 				_db.SaveChanges();
+				HttpContext.Session.SetString("UserProfilePicture", user.ProfilePicture);
 			}
 			return RedirectToAction("Profile");
 		}
