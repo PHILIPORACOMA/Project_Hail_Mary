@@ -351,7 +351,7 @@
                 <div class="col-lg-6">
                     <div class="hero-products">
                         <img src="/images/featured.png" alt="Featured Collection"
-                             style="width:100%; max-height:clamp(400px, 60vh, 700px); object-fit:contain;
+                             style="width:100%; max-height:clamp(600px, 80vh, 900px); object-fit:contain;
                     filter:drop-shadow(0 20px 60px rgba(0,0,0,0.7));
                     margin-bottom:-62px;" />
                     </div>
@@ -388,7 +388,7 @@
         <div class="container-fluid" style="padding: 0 clamp(2rem, 5vw, 6rem);">
             <div class="section-header">
                 <h2>Our Collection</h2>
-                <a asp-controller="Shop" asp-action="Index" class="btn-see-all">See All</a>
+                <a asp-controller="Shop" asp-action="shop" class="btn-see-all">See All</a>
             </div>
             <div class="row g-4">
                 @{
@@ -399,6 +399,9 @@
                                 new { Name = "Buzz",     Slug = "buzz"     },
                                 };
                 }
+                @{
+                    bool userIsLoggedIn = !string.IsNullOrEmpty(Context.Session.GetString("UserFirstName"));
+                }
                 @foreach (var p in featured)
                 {
                     <div class="col-6 col-md-3">
@@ -408,7 +411,14 @@
                                      style="height:clamp(150px, 20vh, 250px); object-fit:contain;" />
                             </div>
                             <p class="product-name">@p.Name</p>
-                            <a href="#" class="btn-buy">Buy Now</a>
+                            @if (userIsLoggedIn)
+                            {
+                                <a href="/Shop/ProductDetail?slug=@p.Slug&name=@Uri.EscapeDataString(p.Name)&category=all" class="btn-buy">Buy Now</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" class="btn-buy">Buy Now</a>
+                            }
                         </div>
                     </div>
                 }
