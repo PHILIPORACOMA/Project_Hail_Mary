@@ -109,11 +109,44 @@ namespace Project_Hail_Mary.Controllers
             }
 
             ViewBag.CartItems = items;
+
+            var user = _context.Users.Find(userId.Value);
             var model = new CheckoutViewModel
             {
                 FirstName = HttpContext.Session.GetString("UserFirstName") ?? "",
                 LastName = HttpContext.Session.GetString("UserLastName") ?? ""
             };
+
+            if (user != null && !string.IsNullOrEmpty(user.Address))
+            {
+                var parts = user.Address.Split(',', StringSplitOptions.TrimEntries);
+                if (parts.Length >= 3)
+                {
+                    model.Address = parts[0];
+                    model.City = parts[1];
+                    model.ZipCode = parts[2];
+                }
+                else if (parts.Length == 2)
+                {
+                    model.Address = parts[0];
+                    // Handle "Cebu 2000" or similar
+                    var lastPart = parts[1];
+                    var lastSpaceIndex = lastPart.LastIndexOf(' ');
+                    if (lastSpaceIndex > 0)
+                    {
+                        model.City = lastPart.Substring(0, lastSpaceIndex).Trim();
+                        model.ZipCode = lastPart.Substring(lastSpaceIndex + 1).Trim();
+                    }
+                    else
+                    {
+                        model.City = lastPart;
+                    }
+                }
+                else
+                {
+                    model.Address = user.Address;
+                }
+            }
 
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 return PartialView("_CheckoutPartial", model);

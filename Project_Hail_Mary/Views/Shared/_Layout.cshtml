@@ -692,6 +692,48 @@
                     document.getElementById('cart-count').textContent = count;
                 });
         }
+
+        function submitCheckout(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const container = document.getElementById('checkoutModalContent') || document.getElementById('checkoutPageContent');
+
+            fetch('/Cart/Checkout', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.text())
+            .then(html => {
+                if (container) container.innerHTML = html;
+            });
+        }
+
+        function placeOrder(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const container = document.getElementById('checkoutModalContent') || document.getElementById('checkoutPageContent');
+
+            fetch('/Cart/PlaceOrder', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => {
+                if (r.redirected) {
+                    window.location.href = r.url;
+                } else {
+                    return r.text();
+                }
+            })
+            .then(html => {
+                if (html && container) {
+                    container.innerHTML = html;
+                }
+            });
+        }
     </script>
 </body>
 </html>
