@@ -22,6 +22,21 @@
             background: transparent;
         }
 
+        .site-header.header-solid {
+            position: relative;
+            background: linear-gradient(160deg, rgba(13,27,62,0.8) 0%, rgba(30,48,96,0.8) 55%, rgba(10,20,40,0.8) 100%), url('/images/silk.jpeg') center/cover no-repeat;
+        }
+
+        .site-header.header-floating {
+            position: relative;
+            background: linear-gradient(160deg, rgba(13,27,62,0.8) 0%, rgba(30,48,96,0.8) 55%, rgba(10,20,40,0.8) 100%), url('/images/silk.jpeg') center/cover no-repeat;
+            margin: 2rem clamp(2rem, 5vw, 6rem) 0;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            z-index: 1000;
+        }
+
         .bazar-nav {
             display: flex;
             align-items: center;
@@ -435,15 +450,18 @@
     </style>
 </head>
 <body>
+    @{
+        bool isHome = ViewData["Title"]?.ToString() == "Home";
+    }
 
-    <header class="site-header">
+    <header class="site-header @(!isHome ? "header-solid" : "")">
         <nav class="bazar-nav">
             <!-- Left Group -->
             <div class="nav-group">
                 <ul class="nav-links">
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-controller="Shop" asp-action="Shop">Shop</a></li>
-                    <li><a href="#">About</a></li>
+                    <li><a href="/#hero">About</a></li>
                 </ul>
             </div>
 

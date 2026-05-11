@@ -146,5 +146,20 @@
             </a>
         }
 
+        <hr style="border:none; border-top:1px solid #e0e0e0; margin:2rem 0;" />
+
+        <!-- Password -->
+        <p style="font-size:clamp(0.8rem, 1.4vw, 1rem); font-weight:700; color:#111; margin:0 0 1.2rem; text-transform:uppercase; letter-spacing:0.05em;">Security</p>
+        <p style="font-size:1rem; color:#111; margin:0 0 1.5rem; padding-left:12px;">
+            ********
+        </p>
+        <a asp-controller="Account" asp-action="ResetPassword" asp-route-email="@Model.Email"
+           style="display:inline-block; margin-top:8px; padding:14px 44px; background:none;
+                      border:1.5px solid #111; border-radius:30px; font-size:0.75rem;
+                      letter-spacing:0.12em; text-transform:uppercase; font-weight:700;
+                      cursor:pointer; font-family:'DM Sans',sans-serif; text-decoration:none; color:#111;">
+            Change Password
+        </a>
+
     </main>
 </div>

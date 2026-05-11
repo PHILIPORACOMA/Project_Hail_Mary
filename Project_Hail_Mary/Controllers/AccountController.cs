@@ -79,7 +79,53 @@ namespace Project_Hail_Mary.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // TODO: send reset email
+            var user = _db.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (user == null)
+            {
+                // To prevent email enumeration, pretend it succeeded
+                return RedirectToAction("ForgotPasswordConfirmation", new { email = model.Email });
+            }
+
+            // Simulated email send
+            return RedirectToAction("ForgotPasswordConfirmation", new { email = model.Email });
+        }
+
+        [HttpGet("forgot-password-confirmation")]
+        public IActionResult ForgotPasswordConfirmation(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpGet("reset-password")]
+        public IActionResult ResetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email)) return RedirectToAction("Login");
+            
+            var model = new ResetPasswordViewModel { Email = email };
+            return View(model);
+        }
+
+        [HttpPost("reset-password")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = _db.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
+            }
+
+            // Update password (plain text currently based on login logic)
+            user.Password = model.NewPassword;
+            user.ConfirmPassword = model.ConfirmPassword;
+            _db.SaveChanges();
+
+            TempData["ResetSuccess"] = "Your password has been successfully reset. Please login.";
             return RedirectToAction("Login");
         }
 

@@ -339,7 +339,7 @@
 
 
     <!-- HERO -->
-    <section class="hero-section">
+    <section class="hero-section" id="hero">
         <div class="hero-silk"></div>
         <div class="container-fluid" style="padding: 0 clamp(2rem, 5vw, 6rem);">
             <div class="row align-items-center">
@@ -365,11 +365,18 @@
     <section class="about-section">
         <div class="container-fluid" style="padding: 0 clamp(2rem, 5vw, 6rem);">
             <div class="row align-items-center g-5">
-                <div class="col-md-5">
-                    <!-- Replace this div with <img src="~/images/about-collection.jpg" ... /> when ready -->
+                <div class="col-md-5" style="position: relative; min-height: 400px; display: flex; align-items: center;">
+                    <!-- Background Image (White Bottles) -->
+                    <img src="/images/perfumes.jpg" alt="White Bottles"
+                         style="position: absolute; top: -10%; right: -5%; width: 85%; max-width: 500px;
+                                border-radius: 4px; object-fit: cover; aspect-ratio: 1/1; z-index: 1;
+                                box-shadow: 0 10px 30px rgba(0,0,0,0.1);" />
+                    
+                    <!-- Foreground Image (Blue Silk) -->
                     <img src="/images/flat.jpg" alt="Silk"
-                         style="width:100%; max-width:600px; border-radius:4px;
-            object-fit:cover; aspect-ratio:1/1;" />
+                         style="position: relative; width: 90%; max-width: 550px; border-radius: 4px;
+                                object-fit: cover; aspect-ratio: 1/1; z-index: 2;
+                                box-shadow: 0 15px 40px rgba(0,0,0,0.25); left: -5%;" />
                 </div>
                 <div class="col-md-7">
                     <div class="about-text-wrap">

@@ -18,6 +18,13 @@
 
             <h1 class="form-title">Login</h1>
 
+            @if (TempData["ResetSuccess"] != null)
+            {
+                <div class="alert alert-success text-center small mb-3">
+                    @TempData["ResetSuccess"]
+                </div>
+            }
+
             <form asp-controller="Account" asp-action="Login" method="post">
                 @Html.AntiForgeryToken()
 
