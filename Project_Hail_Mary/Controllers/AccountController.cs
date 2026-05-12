@@ -4,7 +4,7 @@ using Project_Hail_Mary.Models;
 
 namespace Project_Hail_Mary.Controllers
 {
-    [Route("account")]
+    [Route("Account")]
     public class AccountController : Controller
     {
         private readonly AppDbContext _db;
@@ -60,12 +60,18 @@ namespace Project_Hail_Mary.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // POST /account/logout
+        [HttpPost("logout")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
         // GET /account/login
         [HttpGet("login")]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         // GET /account/forgot-password
         [HttpGet("forgot-password")]
@@ -126,15 +132,6 @@ namespace Project_Hail_Mary.Controllers
             _db.SaveChanges();
 
             TempData["ResetSuccess"] = "Your password has been successfully reset. Please login.";
-            return RedirectToAction("Login");
-        }
-
-        // POST /account/logout
-        [HttpPost("logout")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
 

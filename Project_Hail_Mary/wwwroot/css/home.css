@@ -1,0 +1,297 @@
+:root {
+    --navy: #0d1b3e;
+    --navy-mid: #1a2f6e;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* NAV */
+.navbar-bazar {
+    background-color: var(--navy);
+    padding: 0 2rem;
+    height: 62px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-bazar .nav-link {
+    color: #c8d3e8 !important;
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 0.35rem 0.6rem !important;
+    transition: color 0.2s;
+}
+
+.navbar-bazar .nav-link:hover {
+    color: #fff !important;
+}
+
+.brand-title {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 1.8rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-align: center;
+}
+
+.brand-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: #8a9ab8;
+    text-transform: uppercase;
+    text-align: center;
+    display: block;
+    margin-top: 2px;
+}
+
+/* HERO */
+.hero-section {
+    position: relative;
+    min-height: clamp(500px, 85vh, 900px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(160deg, rgba(13,27,62,0.8) 0%, rgba(30,48,96,0.8) 55%, rgba(10,20,40,0.8) 100%), url('/images/silk.jpeg') center/cover no-repeat;
+    padding-top: 90px; /* Space for the transparent navbar */
+}
+
+.hero-silk {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(118deg, transparent 0px, rgba(255,255,255,0.025) 1px, transparent 2px, transparent 60px), repeating-linear-gradient(62deg, transparent 0px, rgba(255,255,255,0.015) 1px, transparent 2px, transparent 80px);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.hero-content h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 10vw, 6.5rem);
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.btn-shop-outline {
+    background-color: transparent;
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.7);
+    border-radius: 50px;
+    padding: 1.1rem 2.8rem;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn-shop-outline:hover {
+    background-color: rgba(255,255,255,0.12);
+    color: #fff;
+    border-color: #fff;
+}
+
+.hero-products {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 2rem 0;
+}
+
+.bottle-group {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+}
+
+.bottle-svg-hero {
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+}
+
+/* ABOUT */
+.about-section {
+    padding: clamp(3rem, 8vw, 8rem) 0;
+    background: #fff;
+}
+
+.about-img-placeholder {
+    width: 100%;
+    aspect-ratio: 1/1;
+    max-width: 420px;
+    background: linear-gradient(135deg, #1a2f6e 0%, #0d1b3e 100%);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    padding: 20px;
+}
+
+.mini-bottle {
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-text-wrap {
+    padding-left: clamp(1rem, 4vw, 3rem);
+}
+
+.about-text-wrap h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #111;
+    margin-bottom: 1.5rem;
+}
+
+.about-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.about-body {
+    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+}
+
+/* COLLECTION */
+.collection-section {
+    padding: 4rem 0 7rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #111;
+    margin: 0;
+}
+
+.btn-see-all {
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 0.75rem 2.2rem;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #555;
+    text-decoration: none;
+    transition: all 0.25s;
+}
+
+.btn-see-all:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+}
+
+.product-card {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 2.5rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+.product-img-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.product-name {
+    font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+    font-weight: 500;
+    color: #222;
+    letter-spacing: 0.06em;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+.btn-buy {
+    background-color: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.9rem 2.5rem;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.btn-buy:hover {
+    background-color: var(--navy-mid);
+    color: #fff;
+}
+
+/* FOOTER */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .about-text-wrap {
+        padding-left: 0;
+        margin-top: 2rem;
+    }
+
+    .hero-section {
+        min-height: auto;
+    }
+}

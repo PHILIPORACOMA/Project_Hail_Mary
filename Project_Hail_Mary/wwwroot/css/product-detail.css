@@ -1,0 +1,275 @@
+/* ── PRODUCT DETAIL LAYOUT ── */
+.detail-section {
+    padding: 6rem 0 5rem;
+}
+
+.product-image-card {
+    background: linear-gradient(135deg, #0d1b3e 0%, #1a2f6e 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.product-image-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 30% 20%, rgba(30,60,140,0.55) 0%, transparent 65%), repeating-linear-gradient(118deg, transparent 0px, rgba(255,255,255,0.018) 1px, transparent 2px, transparent 60px), repeating-linear-gradient(62deg, transparent 0px, rgba(255,255,255,0.012) 1px, transparent 2px, transparent 80px);
+    pointer-events: none;
+}
+
+/* brand overlay text on card */
+.card-brand-overlay {
+    position: absolute;
+    top: 1.4rem;
+    left: 1.6rem;
+    color: rgba(255,255,255,0.55);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    z-index: 2;
+}
+
+.card-inspired-text {
+    position: absolute;
+    top: 3.5rem;
+    left: 1.6rem;
+    right: 1.6rem;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    z-index: 2;
+}
+
+.card-tag {
+    position: absolute;
+    bottom: 5rem;
+    left: 1.6rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.card-tag span {
+    display: block;
+    color: rgba(255,255,255,0.9);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.card-tag .tag-num {
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.card-tag .tag-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+}
+
+.card-socials {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.6rem;
+    z-index: 2;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.08em;
+    line-height: 1.8;
+}
+
+/* bottle SVG inside card */
+.bottle-wrap {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+/* RIGHT – product info */
+.product-info {
+    padding-left: 2.5rem;
+}
+
+@media (max-width: 767px) {
+    .product-info {
+        padding-left: 0;
+        margin-top: 2rem;
+    }
+}
+
+.product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 0.5rem;
+}
+
+.product-price {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 0.4rem;
+}
+
+.stars-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.4rem;
+}
+
+.stars {
+    color: #b5a04a;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.review-count {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.product-desc {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.72;
+    margin-bottom: 1.1rem;
+}
+
+/* size selector */
+.choose-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+}
+
+.size-options {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.6rem;
+}
+
+.size-btn {
+    border: 1px solid #bbb;
+    background: #fff;
+    border-radius: 50px;
+    padding: 0.45rem 1.6rem;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.18s;
+}
+
+.size-btn.active, .size-btn:hover {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: #fff;
+}
+
+/* quantity */
+.qty-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+}
+
+.qty-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 0.4rem 1.2rem;
+    width: fit-content;
+    margin-bottom: 1.8rem;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: #333;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 25px;
+    text-align: center;
+    user-select: none;
+}
+
+.qty-val {
+    font-size: 1rem;
+    font-weight: 500;
+    min-width: 25px;
+    text-align: center;
+}
+
+/* add to cart */
+.btn-add-cart {
+    display: block;
+    width: 100%;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 1.1rem 2.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.btn-add-cart:hover {
+    background: var(--navy-mid);
+    transform: translateY(-1px);
+}
+
+.btn-add-cart:active {
+    transform: translateY(0);
+}
+
+/* back link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+    transition: color 0.18s;
+}
+
+.back-link:hover {
+    color: var(--navy);
+}
+
+.back-arrow {
+    font-size: 0.9rem;
+}

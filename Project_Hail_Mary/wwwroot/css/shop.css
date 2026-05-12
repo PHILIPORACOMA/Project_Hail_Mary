@@ -1,0 +1,120 @@
+/* SHOP BANNER (HERO) */
+.shop-banner {
+    position: relative;
+    min-height: clamp(300px, 45vh, 500px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(160deg, rgba(13,27,62,0.85) 0%, rgba(30,48,96,0.85) 55%, rgba(10,20,40,0.85) 100%), url('/images/silk.jpeg') center/cover no-repeat;
+    padding-top: 90px; /* Space for the transparent navbar */
+    margin-bottom: 2rem;
+}
+
+.shop-title-wrap {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+}
+
+.shop-banner-h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.shop-banner-sub {
+    display: block;
+    font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+    letter-spacing: 0.4em;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    margin-top: 15px;
+}
+
+/* FILTER TABS */
+.filter-bar {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    padding: 1.6rem 0 0.5rem;
+}
+
+.filter-btn {
+    background: #e9ecef;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    border-color:#ccc;
+    padding: 0.6rem 1.6rem;
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+/* PRODUCT COUNT */
+.product-count {
+    text-align: right;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    color: #999;
+    padding: 0.5rem 0 1.2rem;
+    letter-spacing: 0.04em;
+}
+
+/* PRODUCT GRID */
+.shop-section {
+    padding: 0 0 5rem;
+}
+
+/* ── UPDATED: product card is now an anchor ── */
+.product-card-shop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8f8f8;
+    border-radius: 6px;
+    padding: 2rem 1rem 1.4rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.22s, box-shadow 0.22s;
+}
+
+.product-card-shop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    color: inherit;
+    text-decoration: none;
+}
+
+.product-img-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.9rem;
+    height: clamp(150px, 20vh, 220px);
+    align-items: center;
+}
+
+.product-name-shop {
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    color: #333;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 0.04em;
+}

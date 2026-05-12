@@ -53,9 +53,10 @@ namespace Project_Hail_Mary.Controllers
                     item.Quantity++;
                 else if (action == "dec")
                 {
-                    item.Quantity--;
-                    if (item.Quantity <= 0)
-                        _context.Cart.Remove(item);
+                    if (item.Quantity > 1)
+                    {
+                        item.Quantity--;
+                    }
                 }
                 _context.SaveChanges();
             }
