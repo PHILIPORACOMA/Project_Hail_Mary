@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -225,9 +226,11 @@
             height: 100%;
             max-width: 400px;
         }
+
         .modal.show .modal-dialog.modal-side-drawer {
             transform: translateX(0);
         }
+
         .modal-side-drawer .modal-content {
             height: 100%;
             border-radius: 0;
@@ -292,9 +295,9 @@
             transition: background 0.2s;
         }
 
-        .search-result-item:hover {
-            background: #f9f9f9;
-        }
+            .search-result-item:hover {
+                background: #f9f9f9;
+            }
 
         .search-result-img {
             width: 50px;
@@ -333,9 +336,9 @@
             transition: border-color 0.3s;
         }
 
-        .search-input-drawer:focus {
-            border-color: #0d1b3e;
-        }
+            .search-input-drawer:focus {
+                border-color: #0d1b3e;
+            }
 
         .search-input-icon {
             position: absolute;
@@ -447,27 +450,6 @@
                 <a asp-controller="Home" asp-action="Index" class="brand-name">bəzár</a>
                 <span class="brand-sub">Bizarre</span>
             </div>
-<<<<<<< HEAD
-            <ul class="nav-links">
-                <li><a href="javascript:void(0)" onclick="openSearch()">Search</a></li>
-                @{
-                    var sessionFirstName = Context.Session.GetString("UserFirstName");
-                    var sessionLastName = Context.Session.GetString("UserLastName");
-                    var sessionEmail = Context.Session.GetString("UserEmail");
-                    bool isLoggedIn = !string.IsNullOrEmpty(sessionFirstName);
-                    var initials = isLoggedIn
-                    ? $"{sessionFirstName![0]}{sessionLastName![0]}".ToUpper()
-                    : "";
-                    var fullName = isLoggedIn ? $"{sessionFirstName} {sessionLastName}" : "";
-                }
-                @if (isLoggedIn)
-                {
-                    <li class="profile-dropdown" id="profileDropdown">
-                        <button class="profile-trigger" onclick="toggleDropdown(event)">
-                            <span class="profile-avatar">@initials</span>
-                            <span class="profile-name">@sessionFirstName</span>
-                            <span class="profile-caret">&#9660;</span>
-=======
 
             <!-- Right Group -->
             <div class="nav-group nav-group-right">
@@ -475,7 +457,6 @@
                     <li>
                         <button type="button" class="nav-icon-link" onclick="openSearchModal()">
                             Search
->>>>>>> b8efc71a4c69f6a76faa8f6be8b16a80aa38328f
                         </button>
                     </li>
                     @{
