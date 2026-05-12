@@ -4,7 +4,7 @@ using Project_Hail_Mary.Models;
 
 namespace Project_Hail_Mary.Controllers
 {
-    [Route("account")]
+    [Route("Account")]
     public class AccountController : Controller
     {
         private readonly AppDbContext _db;
@@ -60,12 +60,18 @@ namespace Project_Hail_Mary.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // POST /account/logout
+        [HttpPost("logout")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
         // GET /account/login
         [HttpGet("login")]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         // GET /account/forgot-password
         [HttpGet("forgot-password")]
@@ -79,16 +85,53 @@ namespace Project_Hail_Mary.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // TODO: send reset email
-            return RedirectToAction("Login");
+            var user = _db.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (user == null)
+            {
+                // To prevent email enumeration, pretend it succeeded
+                return RedirectToAction("ForgotPasswordConfirmation", new { email = model.Email });
+            }
+
+            // Simulated email send
+            return RedirectToAction("ForgotPasswordConfirmation", new { email = model.Email });
         }
 
-        // POST /account/logout
-        [HttpPost("logout")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Logout()
+        [HttpGet("forgot-password-confirmation")]
+        public IActionResult ForgotPasswordConfirmation(string email)
         {
-            HttpContext.Session.Clear();
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpGet("reset-password")]
+        public IActionResult ResetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email)) return RedirectToAction("Login");
+            
+            var model = new ResetPasswordViewModel { Email = email };
+            return View(model);
+        }
+
+        [HttpPost("reset-password")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = _db.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
+            }
+
+            // Update password (plain text currently based on login logic)
+            user.Password = model.NewPassword;
+            user.ConfirmPassword = model.ConfirmPassword;
+            _db.SaveChanges();
+
+            TempData["ResetSuccess"] = "Your password has been successfully reset. Please login.";
             return RedirectToAction("Login");
         }
 
