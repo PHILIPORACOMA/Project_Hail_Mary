@@ -124,7 +124,16 @@ namespace Project_Hail_Mary.Controllers
                 Phone = user?.PhoneNumber ?? ""
             };
 
-            if (user != null && !string.IsNullOrEmpty(user.Address))
+            var defaultAddress = user?.Addresses?.FirstOrDefault(a => a.IsDefault) ?? user?.Addresses?.FirstOrDefault();
+
+            if (defaultAddress != null)
+            {
+                model.Address = defaultAddress.AddressLine;
+                model.City = defaultAddress.City;
+                model.ZipCode = defaultAddress.ZipCode;
+                model.Phone = defaultAddress.PhoneNumber;
+            }
+            else if (user != null && !string.IsNullOrEmpty(user.Address))
             {
                 var parts = user.Address.Split(',', StringSplitOptions.TrimEntries);
                 if (parts.Length >= 3)
@@ -191,13 +200,24 @@ namespace Project_Hail_Mary.Controllers
 
             if (model.IsDefaultAddress)
             {
-                var user = _context.Users.Find(userId.Value);
-                if (user != null)
+                var userAddresses = _context.UserAddresses.Where(a => a.UserId == userId.Value).ToList();
+                foreach (var a in userAddresses)
                 {
-                    user.Address = $"{model.Address}, {model.City}, {model.ZipCode}";
-                    user.PhoneNumber = model.Phone;
-                    _context.SaveChanges();
+                    a.IsDefault = false;
                 }
+
+                _context.UserAddresses.Add(new UserAddress
+                {
+                    UserId = userId.Value,
+                    Label = "Checkout Default",
+                    AddressLine = model.Address,
+                    City = model.City,
+                    ZipCode = model.ZipCode,
+                    PhoneNumber = model.Phone,
+                    IsDefault = true
+                });
+                
+                _context.SaveChanges();
             }
 
             ViewBag.AddressSubmitted = true;
