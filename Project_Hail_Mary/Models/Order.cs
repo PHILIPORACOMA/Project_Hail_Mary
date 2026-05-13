@@ -34,6 +34,8 @@ namespace Project_Hail_Mary.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
 
+        public string? TrackingNumber { get; set; }
+
         [ForeignKey("UserId")]
         public Users? User { get; set; }
 

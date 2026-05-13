@@ -34,7 +34,13 @@ namespace Project_Hail_Mary.Models
 
 		public string? Address { get; set; }
 
+		public string? PhoneNumber { get; set; }
+
 		public string? ProfilePicture { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        public List<UserAddress> Addresses { get; set; } = new();
 	}
 
 }

@@ -55,6 +55,7 @@ namespace Project_Hail_Mary.Controllers
             HttpContext.Session.SetString("UserEmail", user.Email);
             HttpContext.Session.SetString("UserFirstName", user.FirstName);
             HttpContext.Session.SetString("UserLastName", user.LastName);
+            HttpContext.Session.SetString("UserPhoneNumber", user.PhoneNumber ?? "");
             HttpContext.Session.SetString("UserProfilePicture", user.ProfilePicture ?? "");
 
             return RedirectToAction("Index", "Home");
@@ -158,7 +159,9 @@ namespace Project_Hail_Mary.Controllers
 			if (userId == null)
 				return RedirectToAction("Login");
 
-			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
+			var user = _db.Users
+                .Include(u => u.Addresses)
+                .FirstOrDefault(u => u.Id == userId.Value);
 			if (user == null)
 				return RedirectToAction("Login");
 
@@ -174,10 +177,10 @@ namespace Project_Hail_Mary.Controllers
 			return View(user);
 		}
 
-		// POST /account/update-info
-		[HttpPost("update-info")]
+		// POST /account/update-profile
+		[HttpPost("update-profile")]
 		[ValidateAntiForgeryToken]
-		public IActionResult UpdateInfo(string firstName, string lastName, string email)
+		public IActionResult UpdateProfile(string firstName, string lastName, string email, DateTime? dateOfBirth)
 		{
 			var userId = HttpContext.Session.GetInt32("UserId");
 			if (userId == null) return RedirectToAction("Login");
@@ -188,6 +191,7 @@ namespace Project_Hail_Mary.Controllers
 			user.FirstName = firstName;
 			user.LastName = lastName;
 			user.Email = email;
+            user.DateOfBirth = dateOfBirth;
 			_db.SaveChanges();
 
 			// Update session
@@ -198,21 +202,102 @@ namespace Project_Hail_Mary.Controllers
 			return RedirectToAction("Profile");
 		}
 
-		// POST /account/update-address
-		[HttpPost("update-address")]
-		[ValidateAntiForgeryToken]
-		public IActionResult UpdateAddress(string address)
-		{
-			var userId = HttpContext.Session.GetInt32("UserId");
-			if (userId == null) return RedirectToAction("Login");
+        // POST /account/add-address
+        [HttpPost("add-address")]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddAddress(string label, string addressLine, string city, string zipCode, string phoneNumber, bool isDefault)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null) return RedirectToAction("Login");
 
-			var user = _db.Users.FirstOrDefault(u => u.Id == userId.Value);
-			if (user == null) return RedirectToAction("Login");
+            if (isDefault)
+            {
+                var existingAddresses = _db.UserAddresses.Where(a => a.UserId == userId.Value);
+                foreach (var addr in existingAddresses) addr.IsDefault = false;
+            }
 
-			user.Address = address;
-			_db.SaveChanges();
-			return RedirectToAction("Profile");
-		}
+            var newAddress = new UserAddress
+            {
+                UserId = userId.Value,
+                Label = label,
+                AddressLine = addressLine,
+                City = city,
+                ZipCode = zipCode,
+                PhoneNumber = phoneNumber,
+                IsDefault = isDefault
+            };
+
+            _db.UserAddresses.Add(newAddress);
+            _db.SaveChanges();
+
+            return RedirectToAction("Profile");
+        }
+
+        // POST /account/delete-address
+        [HttpPost("delete-address")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteAddress(int addressId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null) return RedirectToAction("Login");
+
+            var address = _db.UserAddresses.FirstOrDefault(a => a.Id == addressId && a.UserId == userId.Value);
+            if (address != null)
+            {
+                _db.UserAddresses.Remove(address);
+                _db.SaveChanges();
+            }
+
+            return RedirectToAction("Profile");
+        }
+
+        // POST /account/set-default-address
+        [HttpPost("set-default-address")]
+        [ValidateAntiForgeryToken]
+        public IActionResult SetDefaultAddress(int addressId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null) return RedirectToAction("Login");
+
+            var addresses = _db.UserAddresses.Where(a => a.UserId == userId.Value).ToList();
+            foreach (var addr in addresses)
+            {
+                addr.IsDefault = (addr.Id == addressId);
+            }
+            _db.SaveChanges();
+
+            return RedirectToAction("Profile");
+        }
+
+        // GET /account/google-login
+        [HttpGet("google-login")]
+        public IActionResult GoogleLogin()
+        {
+            // Simulate Google Login callback
+            // In a real app, this would use Microsoft.AspNetCore.Authentication.Google
+            
+            var mockUser = _db.Users.FirstOrDefault(u => u.Email == "googleuser@example.com");
+            if (mockUser == null)
+            {
+                mockUser = new Users
+                {
+                    FirstName = "Google",
+                    LastName = "User",
+                    Email = "googleuser@example.com",
+                    Password = "SocialLoginPassword123!", // Dummy password
+                    ConfirmPassword = "SocialLoginPassword123!"
+                };
+                _db.Users.Add(mockUser);
+                _db.SaveChanges();
+            }
+
+            HttpContext.Session.SetInt32("UserId", mockUser.Id);
+            HttpContext.Session.SetString("UserEmail", mockUser.Email);
+            HttpContext.Session.SetString("UserFirstName", mockUser.FirstName);
+            HttpContext.Session.SetString("UserLastName", mockUser.LastName);
+
+            return RedirectToAction("Index", "Home");
+        }
 
 		// POST /account/upload-picture
 		[HttpPost("upload-picture")]

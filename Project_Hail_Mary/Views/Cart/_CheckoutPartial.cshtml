@@ -1,6 +1,7 @@
 @model Project_Hail_Mary.Models.CheckoutViewModel
 @{
     var cartItems = ViewBag.CartItems as List<Project_Hail_Mary.Models.Cart> ?? new();
+    var savedAddresses = ViewBag.UserAddresses as List<Project_Hail_Mary.Models.UserAddress> ?? new();
     decimal subtotal = cartItems.Sum(i => i.Price * i.Quantity);
     bool addressSubmitted = ViewBag.AddressSubmitted == true;
 }
@@ -14,6 +15,22 @@
     <div class="row g-4">
         <!-- Shipping Form -->
         <div class="col-md-7">
+            @if (savedAddresses.Any() && !addressSubmitted)
+            {
+                <h6 class="text-uppercase fw-bold text-primary mb-3" style="font-size: 0.8rem; letter-spacing: 0.05em;">Saved Addresses</h6>
+                <div class="d-flex gap-2 overflow-auto pb-3 mb-4" style="scrollbar-width: thin;">
+                    @foreach (var addr in savedAddresses)
+                    {
+                        <button type="button" class="btn btn-outline-dark text-start p-3 rounded-3" style="min-width: 200px; font-size: 0.85rem;" 
+                                onclick="fillAddress('@addr.AddressLine', '@addr.City', '@addr.ZipCode', '@addr.PhoneNumber')">
+                            <strong class="d-block mb-1">@addr.Label</strong>
+                            <span class="text-muted d-block text-truncate" style="max-width: 150px;">@addr.AddressLine</span>
+                            <span class="text-muted d-block">@addr.City @addr.ZipCode</span>
+                        </button>
+                    }
+                </div>
+            }
+
             <h6 class="text-uppercase fw-bold text-primary mb-3" style="font-size: 0.9rem; letter-spacing: 0.1em;">Shipping Information</h6>
             
             <form id="checkoutForm" onsubmit="submitCheckout(event)">
@@ -27,29 +44,29 @@
                     </div>
                 </div>
                 <div class="mb-2">
-                    <input class="form-control form-control-sm border-0 bg-light" asp-for="Address" placeholder="Address" required />
+                    <input class="form-control form-control-sm border-0 bg-light" asp-for="Address" id="chkAddress" placeholder="Address" required />
                 </div>
                 <div class="row g-2 mb-2">
                     <div class="col-8">
-                        <input class="form-control form-control-sm border-0 bg-light" asp-for="City" placeholder="City" required />
+                        <input class="form-control form-control-sm border-0 bg-light" asp-for="City" id="chkCity" placeholder="City" required />
                     </div>
                     <div class="col-4">
-                        <input class="form-control form-control-sm border-0 bg-light" asp-for="ZipCode" placeholder="Zip" required />
+                        <input class="form-control form-control-sm border-0 bg-light" asp-for="ZipCode" id="chkZip" placeholder="Zip" required />
                     </div>
                 </div>
                 <div class="mb-3">
-                    <input class="form-control form-control-sm border-0 bg-light" asp-for="Phone" placeholder="Mobile Number" required />
-                </div>
-
-                <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" asp-for="IsDefaultAddress" id="saveAddress">
-                    <label class="form-check-label text-muted" for="saveAddress" style="font-size: 0.9rem;">
-                        Save address for later
-                    </label>
+                    <input class="form-control form-control-sm border-0 bg-light" asp-for="Phone" id="chkPhone" placeholder="Mobile Number" required />
                 </div>
 
                 @if (!addressSubmitted)
                 {
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" asp-for="IsDefaultAddress" id="saveAddress">
+                        <label class="form-check-label text-muted" for="saveAddress" style="font-size: 0.9rem;">
+                            Save address to profile
+                        </label>
+                    </div>
+
                     <button type="submit" class="btn btn-dark w-100 py-3 fw-bold text-uppercase border-0" style="font-size: 1rem; letter-spacing: 0.1em;">
                         Review Order
                     </button>
@@ -115,3 +132,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    function fillAddress(addr, city, zip, phone) {
+        document.getElementById('chkAddress').value = addr;
+        document.getElementById('chkCity').value = city;
+        document.getElementById('chkZip').value = zip;
+        document.getElementById('chkPhone').value = phone;
+    }
+</script>

@@ -532,6 +532,7 @@
                         var modalFirstName = Context.Session.GetString("UserFirstName");
                         var modalLastName = Context.Session.GetString("UserLastName");
                         var modalEmail = Context.Session.GetString("UserEmail");
+                        var modalPhone = Context.Session.GetString("UserPhoneNumber");
                         var modalProfilePic = Context.Session.GetString("UserProfilePicture");
                         bool isModalLoggedIn = !string.IsNullOrEmpty(modalFirstName);
                         var modalInitials = isModalLoggedIn
@@ -551,7 +552,11 @@
                                 <div class="profile-avatar mx-auto mb-3" style="width:80px; height:80px; font-size:1.5rem;">@modalInitials</div>
                             }
                             <strong class="d-block fs-5 text-dark">@modalFullName</strong>
-                            <span class="text-muted">@modalEmail</span>
+                            <div class="text-muted small">@modalEmail</div>
+                            @if (!string.IsNullOrEmpty(modalPhone))
+                            {
+                                <div class="text-muted small">@modalPhone</div>
+                            }
                         </div>
                         
                         <div class="d-flex flex-column gap-2 px-3">

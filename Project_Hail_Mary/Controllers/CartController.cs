@@ -111,11 +111,17 @@ namespace Project_Hail_Mary.Controllers
 
             ViewBag.CartItems = items;
 
-            var user = _context.Users.Find(userId.Value);
+            var user = _context.Users
+                .Include(u => u.Addresses)
+                .FirstOrDefault(u => u.Id == userId.Value);
+
+            ViewBag.UserAddresses = user?.Addresses?.ToList() ?? new List<UserAddress>();
+
             var model = new CheckoutViewModel
             {
                 FirstName = HttpContext.Session.GetString("UserFirstName") ?? "",
-                LastName = HttpContext.Session.GetString("UserLastName") ?? ""
+                LastName = HttpContext.Session.GetString("UserLastName") ?? "",
+                Phone = user?.PhoneNumber ?? ""
             };
 
             if (user != null && !string.IsNullOrEmpty(user.Address))
@@ -189,6 +195,7 @@ namespace Project_Hail_Mary.Controllers
                 if (user != null)
                 {
                     user.Address = $"{model.Address}, {model.City}, {model.ZipCode}";
+                    user.PhoneNumber = model.Phone;
                     _context.SaveChanges();
                 }
             }
@@ -225,7 +232,8 @@ namespace Project_Hail_Mary.Controllers
                 PhoneNumber = phone,
                 OrderDate = DateTime.UtcNow,
                 Status = "Processing",
-                TotalAmount = items.Sum(i => i.Price * i.Quantity)
+                TotalAmount = items.Sum(i => i.Price * i.Quantity),
+                TrackingNumber = "BZ-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper()
             };
 
             foreach (var item in items)
